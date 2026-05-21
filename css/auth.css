@@ -1,0 +1,106 @@
+/* 2. VISTA DE AUTENTICACIÓN (LOGIN & REGISTRO) */
+#view-auth {
+    background: radial-gradient(circle at 30% 70%, #0e0d19 0%, var(--bg-dark-900) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.auth-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 40px;
+    width: 100%;
+    max-width: 440px;
+    backdrop-filter: blur(20px);
+    box-shadow: var(--glass-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    animation: floatAnimation 6s infinite ease-in-out;
+}
+
+@keyframes floatAnimation {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.auth-header {
+    text-align: center;
+}
+
+.auth-header h2 {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #ffffff;
+}
+
+.auth-header p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.input-icon-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon-container .input-icon {
+    position: absolute;
+    left: 14px;
+    color: var(--text-muted);
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.input-icon-container input {
+    padding-left: 36px !important;
+    width: 100%;
+}
+
+.auth-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.auth-card form input[type="password"] {
+    background-color: var(--bg-dark-700);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    padding: 12px 14px;
+    border-radius: var(--radius-md);
+    font-family: var(--font-primary);
+    font-size: 0.9rem;
+    outline: none;
+    transition: var(--transition-smooth);
+}
+
+.auth-card form input[type="password"]:focus {
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
+    background-color: var(--bg-dark-600);
+}
+
+.auth-footer {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.auth-footer a {
+    color: var(--color-secondary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: var(--transition-smooth);
+}
+
+.auth-footer a:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+}
