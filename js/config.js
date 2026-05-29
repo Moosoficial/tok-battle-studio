@@ -22,6 +22,8 @@ export function initDOM() {
     // Video params
     dom.selectDuration = document.getElementById('select-duration');
     dom.selectFps = document.getElementById('select-fps');
+    dom.inputFrameStart = document.getElementById('input-frame-start');
+    dom.inputFrameEnd = document.getElementById('input-frame-end');
     
     // Playback
     dom.btnPlayPause = document.getElementById('btn-play-pause');

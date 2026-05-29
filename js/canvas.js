@@ -5,6 +5,8 @@ let isPlaying = true;
 let isExporting = false;
 let duration = 10;
 let fps = 60;
+let frameStart = 0;
+let frameEnd = 600;
 
 let startTime = Date.now();
 let elapsedMs = 0;
@@ -719,7 +721,15 @@ function formatTime(sec) {
         // Calcular el tiempo transcurrido
         const now = Date.now();
         elapsedMs = (now - startTime) % (duration * 1000);
-        const timeSec = elapsedMs / 1000;
+        let timeSec = elapsedMs / 1000;
+
+        // Limitar la reproducción al rango de frames clave
+        let currentFrame = Math.floor(timeSec * fps);
+        if (currentFrame > frameEnd || currentFrame < frameStart) {
+            elapsedMs = (frameStart / fps) * 1000;
+            startTime = Date.now() - elapsedMs;
+            timeSec = elapsedMs / 1000;
+        }
 
         // Actualizar etiqueta del reloj de reproducción
         const currentFormatted = formatTime(timeSec);
@@ -826,8 +836,8 @@ function formatTime(sec) {
 
         // Detener audio o reseteos previos
         elapsedMs = 0;
-        let exportFrame = 0;
-        const totalFrames = duration * fps;
+        let exportFrame = frameStart;
+        const totalFrames = frameEnd;
         
         // Capturar flujo del Canvas en alta resolución
         // Especificar codec y bitrate alto para calidad cinematográfica neón
@@ -903,7 +913,8 @@ function formatTime(sec) {
             }
 
             // Actualizar interfaz del modal de progreso
-            const percent = Math.floor((exportFrame / totalFrames) * 100);
+            const range = frameEnd - frameStart || 1;
+            const percent = Math.floor(((exportFrame - frameStart) / range) * 100);
             exportProgressFill.style.width = `${percent}%`;
             exportProgressText.textContent = `${percent}%`;
 
@@ -1010,13 +1021,56 @@ export function initCanvas() {
         });
     });
 
+    // Inicializar límites de frames
+    if (dom.inputFrameStart && dom.inputFrameEnd) {
+        const total = duration * fps;
+        dom.inputFrameStart.max = total;
+        dom.inputFrameEnd.max = total;
+        dom.inputFrameEnd.value = total;
+        frameStart = 0;
+        frameEnd = total;
+
+        dom.inputFrameStart.addEventListener('input', (e) => {
+            frameStart = Math.max(0, Math.min(frameEnd - 1, parseInt(e.target.value) || 0));
+            e.target.value = frameStart;
+            elapsedMs = (frameStart / fps) * 1000;
+            startTime = Date.now() - elapsedMs;
+        });
+
+        dom.inputFrameEnd.addEventListener('input', (e) => {
+            const maxVal = duration * fps;
+            frameEnd = Math.max(frameStart + 1, Math.min(maxVal, parseInt(e.target.value) || maxVal));
+            e.target.value = frameEnd;
+            elapsedMs = (frameStart / fps) * 1000;
+            startTime = Date.now() - elapsedMs;
+        });
+    }
+
     dom.selectDuration.addEventListener('change', (e) => {
         duration = parseInt(e.target.value);
         elapsedMs = 0;
         startTime = Date.now();
+        
+        const total = duration * fps;
+        if (dom.inputFrameStart && dom.inputFrameEnd) {
+            dom.inputFrameStart.max = total;
+            dom.inputFrameEnd.max = total;
+            dom.inputFrameEnd.value = total;
+        }
+        frameStart = 0;
+        frameEnd = total;
     });
 
     dom.selectFps.addEventListener('change', (e) => {
         fps = parseInt(e.target.value);
+        
+        const total = duration * fps;
+        if (dom.inputFrameStart && dom.inputFrameEnd) {
+            dom.inputFrameStart.max = total;
+            dom.inputFrameEnd.max = total;
+            dom.inputFrameEnd.value = total;
+        }
+        frameStart = 0;
+        frameEnd = total;
     });
 }
