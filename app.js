@@ -4,6 +4,7 @@ import { initAuth } from './js/auth.js';
 import { initRouter, showView } from './js/router.js';
 import { initCanvas } from './js/canvas.js';
 import { initTheme } from './js/theme.js';
+import { initDashboard } from './js/dashboard.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     initDOM();
@@ -11,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initAuth();
     initRouter();
     initCanvas();
+    initDashboard();
     
     const savedUser = localStorage.getItem('tokbattle_user');
     if (savedUser) {

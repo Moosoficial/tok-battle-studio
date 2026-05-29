@@ -1,4 +1,5 @@
 import { dom } from './config.js';
+import { loadGloveTexture, clearGloveTexture, updateColorsFromDOM } from './three-ar.js';
 
 let currentTemplate = 'tap';
 let isPlaying = true;
@@ -13,6 +14,7 @@ let elapsedMs = 0;
 let animationFrameId = null;
 
 let avatarImage = null;
+let gloveImage = null;
 let particles = [];
 let floatingLikes = [];
 
@@ -410,12 +412,10 @@ function formatTime(sec) {
         }
 
         // Actualizar y dibujar corazones
-        floatingLikes.forEach((like, idx) => {
+        floatingLikes = floatingLikes.filter(like => {
             like.update();
-            like.draw(ctx);
-            if (like.alpha <= 0.05) {
-                floatingLikes.splice(idx, 1);
-            }
+            like.draw(dom.ctx);
+            return like.alpha > 0.05;
         });
 
         // Dibujar Avatar centrado superior
@@ -451,10 +451,14 @@ function formatTime(sec) {
         dom.ctx.scale(gloveScale, gloveScale);
         dom.ctx.shadowBlur = 40;
         dom.ctx.shadowColor = dom.colorPrimary.value;
-        dom.ctx.font = "260px 'Outfit'";
-        dom.ctx.textAlign = 'center';
-        dom.ctx.textBaseline = 'middle';
-        dom.ctx.fillText("🥊", 0, 0);
+        if (gloveImage) {
+            dom.ctx.drawImage(gloveImage, -130, -130, 260, 260);
+        } else {
+            dom.ctx.font = "260px 'Outfit'";
+            dom.ctx.textAlign = 'center';
+            dom.ctx.textBaseline = 'middle';
+            dom.ctx.fillText("🥊", 0, 0);
+        }
         dom.ctx.restore();
 
         // Badge neón "x5" parpadeante
@@ -492,12 +496,10 @@ function formatTime(sec) {
             particles.push(new Particle(centerX + (Math.random() - 0.5) * 150, centerY - 120 + (Math.random() - 0.5) * 150, dom.colorSecondary.value));
         }
 
-        particles.forEach((p, idx) => {
+        particles = particles.filter(p => {
             p.update();
-            p.draw(ctx);
-            if (p.alpha <= 0.05) {
-                particles.splice(idx, 1);
-            }
+            p.draw(dom.ctx);
+            return p.alpha > 0.05;
         });
 
         // Textos del usuario
@@ -562,12 +564,10 @@ function formatTime(sec) {
             particles.push(new Particle(px, py, dom.colorPrimary.value, true));
         }
 
-        particles.forEach((p, idx) => {
+        particles = particles.filter(p => {
             p.update();
-            p.draw(ctx);
-            if (p.alpha <= 0.05) {
-                particles.splice(idx, 1);
-            }
+            p.draw(dom.ctx);
+            return p.alpha > 0.05;
         });
 
         // Título de la Batalla en cabecera
@@ -935,9 +935,11 @@ export function initCanvas() {
 
     dom.colorPrimary.addEventListener('input', (e) => {
         e.target.nextElementSibling.style.backgroundColor = e.target.value;
+        updateColorsFromDOM(); // Sincronizar en 3D
     });
     dom.colorSecondary.addEventListener('input', (e) => {
         e.target.nextElementSibling.style.backgroundColor = e.target.value;
+        updateColorsFromDOM(); // Sincronizar en 3D
     });
 
     dom.avatarDropZone.addEventListener('click', () => dom.avatarInput.click());
@@ -983,6 +985,87 @@ export function initCanvas() {
             img.src = event.target.result;
         };
         reader.readAsDataURL(file);
+    }
+
+    // --- CARGADOR SEGURO DE GUANTES PERSONALIZADOS (MAGIC BYTES VALIDATION) ---
+    if (dom.gloveDropZone && dom.gloveInput) {
+        dom.gloveDropZone.addEventListener('click', () => dom.gloveInput.click());
+        
+        dom.gloveDropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dom.gloveDropZone.style.borderColor = 'var(--color-primary)';
+        });
+        
+        dom.gloveDropZone.addEventListener('dragleave', () => {
+            dom.gloveDropZone.style.borderColor = 'rgba(255, 255, 255, 0.12)';
+        });
+        
+        dom.gloveDropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dom.gloveDropZone.style.borderColor = 'rgba(255, 255, 255, 0.12)';
+            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                handleGloveFile(e.dataTransfer.files[0]);
+            }
+        });
+
+        dom.gloveInput.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files[0]) {
+                handleGloveFile(e.target.files[0]);
+            }
+        });
+
+        dom.btnRemoveGlove.addEventListener('click', (e) => {
+            e.stopPropagation();
+            gloveImage = null;
+            dom.glovePreviewContainer.classList.add('hidden');
+            dom.glovePrompt.classList.remove('hidden');
+            dom.gloveInput.value = '';
+            clearGloveTexture(); // Limpiar textura 3D
+        });
+    }
+
+    function validatePNGMagicBytes(file, callback) {
+        const reader = new FileReader();
+        reader.onloadend = (e) => {
+            if (e.target.readyState === FileReader.DONE) {
+                const arr = new Uint8Array(e.target.result);
+                // PNG signature bytes: 89 50 4E 47 0D 0A 1A 0A
+                const isPNG = arr[0] === 0x89 && arr[1] === 0x50 && arr[2] === 0x4E && arr[3] === 0x47 &&
+                              arr[4] === 0x0D && arr[5] === 0x0A && arr[6] === 0x1A && arr[7] === 0x0A;
+                callback(isPNG);
+            }
+        };
+        const blob = file.slice(0, 8);
+        reader.readAsArrayBuffer(blob);
+    }
+
+    function handleGloveFile(file) {
+        if (file.size > 5 * 1024 * 1024) {
+            alert('¡Error! El archivo supera el tamaño máximo permitido de 5MB.');
+            return;
+        }
+
+        validatePNGMagicBytes(file, (isValid) => {
+            if (!isValid) {
+                alert('¡Fallo de Seguridad (Magic Bytes)! El archivo subido no es una imagen PNG real y válida.');
+                if (dom.gloveInput) dom.gloveInput.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onload = () => {
+                    gloveImage = img;
+                    dom.glovePreviewImg.src = event.target.result;
+                    dom.glovePrompt.classList.add('hidden');
+                    dom.glovePreviewContainer.classList.remove('hidden');
+                    loadGloveTexture(file); // Cargar textura 3D
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
     }
 
     dom.btnPlayPause.addEventListener('click', () => {
@@ -1074,3 +1157,18 @@ export function initCanvas() {
         frameEnd = total;
     });
 }
+
+// Getters y Setters para Gestión de Plantillas
+export function getAvatarImage() { return avatarImage; }
+export function setAvatarImage(img) { avatarImage = img; }
+export function getGloveImage() { return gloveImage; }
+export function setGloveImage(img) { gloveImage = img; }
+export function getTimelineBounds() { return { start: frameStart, end: frameEnd, duration, fps }; }
+export function setTimelineBounds(start, end, dur, f) {
+    frameStart = start;
+    frameEnd = end;
+    duration = dur;
+    fps = f;
+}
+export function getCurrentTemplate() { return currentTemplate; }
+export function setCurrentTemplate(template) { currentTemplate = template; }

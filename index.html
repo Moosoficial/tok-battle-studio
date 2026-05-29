@@ -100,6 +100,15 @@
             </div>
         </header>
         <main class="dashboard-content">
+            <!-- Sección de Mis Alertas Personalizadas -->
+            <div class="dashboard-title-area" id="saved-designs-title" style="display: none; border-bottom: 1px solid var(--glass-border); padding-bottom: 15px; margin-bottom: 20px;">
+                <h2>Mis Alertas Personalizadas 💾</h2>
+                <p>Tus configuraciones personalizadas guardadas para transmitir o volver a editar.</p>
+            </div>
+            <div class="templates-grid" id="saved-templates-grid" style="display: none; margin-bottom: 40px; border-bottom: 1px solid var(--glass-border); padding-bottom: 40px;">
+                <!-- Aquí se inyectarán los diseños guardados dinámicamente -->
+            </div>
+
             <div class="dashboard-title-area">
                 <h2>Catálogo de Plantillas Neón</h2>
                 <p>Elige una plantilla base para personalizarla con tus colores y fotos de perfil.</p>
@@ -246,6 +255,22 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="input-wrapper">
+                    <label>Guante de Boxeo o Logotipo Personalizado</label>
+                    <div class="file-upload-zone" id="glove-drop-zone" style="position: relative;">
+                        <input type="file" id="glove-input" accept="image/png" class="file-hidden">
+                        <div class="upload-prompt" id="glove-prompt">
+                            <span class="upload-icon">🥊</span>
+                            <span>Sube tu guante o logo (PNG Transparente)</span>
+                            <small>Soporta imágenes .PNG nítidas hasta 5MB</small>
+                        </div>
+                        <div class="upload-preview hidden" id="glove-preview-container">
+                            <img id="glove-preview-img" src="" alt="Guante de Boxeo Personalizado" style="max-height: 80px; object-fit: contain;">
+                            <button type="button" class="btn-remove-glove" id="btn-remove-glove" style="position: absolute; top: 10px; right: 10px; background: rgba(255, 51, 80, 0.2); border: 1px solid var(--color-primary); color: white; border-radius: var(--radius-sm); padding: 2px 8px; cursor: pointer;">Eliminar ✕</button>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <section class="section-group">
@@ -290,11 +315,18 @@
 
         <!-- Visualizador y Simulador de Video 9:16 -->
         <section class="studio-workplace">
-            <div class="simulator-wrapper">
+            <div class="simulator-wrapper" style="flex-direction: column;">
+                <!-- Simulator Mode Toggle -->
+                <div class="simulator-mode-toggle" style="display: flex; gap: 8px; margin-bottom: 12px; background: rgba(5, 5, 8, 0.6); padding: 4px; border-radius: 30px; border: 1px solid var(--glass-border); z-index: 10;">
+                    <button class="mode-toggle-btn active" id="btn-mode-2d" style="background: var(--color-primary); border: none; padding: 6px 14px; border-radius: 30px; color: white; cursor: pointer; font-size: 0.75rem; font-weight: 700; transition: var(--transition-smooth);">Overlay 2D ⚡</button>
+                    <button class="mode-toggle-btn" id="btn-mode-3d" style="background: transparent; border: none; padding: 6px 14px; border-radius: 30px; color: var(--text-secondary); cursor: pointer; font-size: 0.75rem; font-weight: 700; transition: var(--transition-smooth);">Hand AR 3D 🥊</button>
+                </div>
                 <div class="smartphone-frame">
                     <div class="smartphone-screen">
                         <!-- Canvas principal para dibujo y exportación -->
                         <canvas id="studio-canvas" width="1080" height="1920"></canvas>
+                        <!-- Canvas de Three.js para previsualización AR 3D -->
+                        <div id="canvas3d-container" class="hidden" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 2;"></div>
                         
                         <!-- Overlay interactivo para previsualización HTML -->
                         <div class="screen-overlay">
@@ -365,6 +397,10 @@
                         <span class="btn-help-icon">📖</span>
                         <span>Guía de OBS / TikTok</span>
                     </button>
+                    <button class="export-btn" id="btn-save-template" style="background: linear-gradient(135deg, var(--color-secondary), #00a8cc); box-shadow: 0 4px 20px rgba(0, 242, 254, 0.35);">
+                        <span class="btn-save-icon">💾</span>
+                        <span>Guardar Alerta</span>
+                    </button>
                     <button class="export-btn" id="btn-export">
                         <span class="btn-export-icon">🎬</span>
                         <span>Exportar Video (1080x1920)</span>
@@ -433,6 +469,9 @@
             </div>
         </div>
     </div>
+
+    <!-- Three.js CDN para previsualización 3D AR -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <!-- Script principal de lógica -->
     <script type="module" src="app.js"></script>

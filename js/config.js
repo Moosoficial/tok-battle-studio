@@ -18,6 +18,14 @@ export function initDOM() {
     dom.avatarPreviewContainer = document.getElementById('avatar-preview-container');
     dom.avatarPreviewImg = document.getElementById('avatar-preview-img');
     dom.btnRemoveAvatar = document.getElementById('btn-remove-avatar');
+
+    // Glove Customizer
+    dom.gloveInput = document.getElementById('glove-input');
+    dom.gloveDropZone = document.getElementById('glove-drop-zone');
+    dom.glovePrompt = document.getElementById('glove-prompt');
+    dom.glovePreviewContainer = document.getElementById('glove-preview-container');
+    dom.glovePreviewImg = document.getElementById('glove-preview-img');
+    dom.btnRemoveGlove = document.getElementById('btn-remove-glove');
     
     // Video params
     dom.selectDuration = document.getElementById('select-duration');
@@ -76,6 +84,16 @@ export function initDOM() {
     dom.battleRedTeam = document.getElementById('battle-red-team');
     dom.battleTimer = document.getElementById('battle-timer');
     dom.streamerTag = document.getElementById('streamer-tag');
+    
+    // Guardar Plantillas / Diseños Guardados
+    dom.btnSaveTemplate = document.getElementById('btn-save-template');
+    dom.savedTemplatesGrid = document.getElementById('saved-templates-grid');
+    dom.savedDesignsTitle = document.getElementById('saved-designs-title');
+    
+    // Modos de previsualización 2D / 3D
+    dom.btnMode2D = document.getElementById('btn-mode-2d');
+    dom.btnMode3D = document.getElementById('btn-mode-3d');
+    dom.canvas3DContainer = document.getElementById('canvas3d-container');
 }
 
 export const mockComments = [
