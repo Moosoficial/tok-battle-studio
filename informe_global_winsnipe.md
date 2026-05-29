@@ -12,6 +12,17 @@ El sistema opera bajo dos vertientes de autoría independientes:
 1.  **Overlays de Pantalla (2D):** Indicadores competitivos, cuentas regresivas y mecánicas visuales de "TAP TAP" y multiplicadores de "Guante", optimizados como widgets web de bajísimo consumo de CPU.
 2.  **AR Asset Factory (Realidad Aumentada):** Un estudio de diseño en el navegador para compilar texturas y sistemas de partículas configurados bajo estándares de seguimiento corporal (ej. seguimiento de manos para guantes de boxeo), listos para exportar directamente hacia **TikTok Effect House**.
 
+### 1.5. ESTRATEGIA DE SALIDA DE RECURSOS (VIDEOS VS. AR ASSETS)
+
+Para garantizar la máxima fidelidad visual y competir directamente con los efectos oficiales de la plataforma (como las animaciones del León o Dragón en 3D), WinSnipe implementará una **estrategia de salida dual** y optimizada:
+
+#### A. Overlays para TikTok Live Studio (Widgets Activos y Videos)
+*   **WebM con Canal Alfa (Transparencia Real):** Salida por defecto y recomendada de la plataforma. La animación se exporta a 60 FPS en resolución 1080x1920 con un canal de transparencia nativo real para que el streamer la inyecte directamente en TikTok Live Studio como "Fuente Multimedia" sin halos ni bordes verdes pixelados.
+*   **MP4 con Pantalla Verde (Chroma Key):** Formato alternativo (fallback) con fondo croma verde sólido (#00B140). Ideal para creadores que editan clips de batallas desde el móvil (CapCut) o para herramientas de transmisión antiguas.
+
+#### B. AR Asset Factory (Para Creadores en TikTok Effect House)
+*   **Compilador de Spritesheets y JSON:** El usuario diseña el guante y los efectos de partículas neón. La plataforma empaqueta automáticamente las imágenes secuenciales animadas en un archivo comprimido `.zip` con un manifiesto `.json` listo para importarse directamente a **TikTok Effect House** (dentro de las plantillas de Hand Tracking o Screen Effects).
+
 ---
 
 ## 2. ARQUITECTURA DE SISTEMA (DIAGRAMA)
