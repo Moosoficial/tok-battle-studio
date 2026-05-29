@@ -15,6 +15,7 @@ Este plan integra las nuevas directrices de arquitectura y diseño basadas en el
 *   **Módulo AR (TikTok Effect House)**: Herramienta de compilación de texturas y sistemas de partículas listos para exportar a Effect House.
 *   **Línea de Tiempo AR**: Parámetros de fotogramas clave (`Frame Start` / `Frame End`), `tipo_tracking` (ej: `hand_tracker`) y curvas de velocidad.
 *   **Editor Visual**: Reemplazo dinámico de los emojis (como 🥊) por imágenes PNG cargadas con físicas orbitales avanzadas.
+*   **Tema Dinámico (Claro/Oscuro)**: Sistema de variables CSS unificadas para permitir al streamer alternar instantáneamente entre el modo Cyberpunk oscuro absoluto (#050508) y un modo claro minimalista premium (#faf8ff) según su preferencia estética.
 
 ### Fase 3: Previsualizador WebGL 3D y Plantillas Extendidas
 *   **Render WebGL (Three.js)**: Lienzo interactivo en 3D para simular el comportamiento de las texturas de los guantes sobre un maniquí virtual con seguimiento (hand/face tracking).
