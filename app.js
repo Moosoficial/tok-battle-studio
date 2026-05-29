@@ -3,9 +3,11 @@ import { updateState } from './js/state.js';
 import { initAuth } from './js/auth.js';
 import { initRouter, showView } from './js/router.js';
 import { initCanvas } from './js/canvas.js';
+import { initTheme } from './js/theme.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     initDOM();
+    initTheme();
     initAuth();
     initRouter();
     initCanvas();

@@ -41,6 +41,8 @@ export function initDOM() {
     dom.btnLandingStart = document.getElementById('btn-landing-start');
     dom.btnBackDashboard = document.getElementById('btn-back-dashboard');
     dom.btnLogout = document.getElementById('btn-logout');
+    dom.btnDashboardThemeToggle = document.getElementById('btn-dashboard-theme-toggle');
+    dom.btnStudioThemeToggle = document.getElementById('btn-studio-theme-toggle');
     
     // Auth
     dom.authForm = document.getElementById('auth-form');

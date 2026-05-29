@@ -1,5 +1,6 @@
 export const state = {
     currentTemplate: 'tap', // 'tap' | 'glove' | 'versus'
+    currentTheme: 'dark', // 'dark' | 'light'
     isPlaying: true,
     isExporting: false,
     duration: 10,
