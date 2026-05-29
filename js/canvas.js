@@ -149,57 +149,7 @@ function formatTime(sec) {
         }
     }
 
-    // ----------------------------------------------------------------------
-    // 5. SISTEMA DE GESTIÓN Y RENDERIZADO DEL AVATAR
-    // ----------------------------------------------------------------------
-    // Arrastrar y soltar imagen
-    avatarDropZone.addEventListener('click', () => avatarInput.click());
-    
-    avatarDropZone.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        avatarDropZone.style.borderColor = 'var(--color-primary)';
-    });
-    
-    avatarDropZone.addEventListener('dragleave', () => {
-        avatarDropZone.style.borderColor = 'rgba(255, 255, 255, 0.12)';
-    });
-    
-    avatarDropZone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        avatarDropZone.style.borderColor = 'rgba(255, 255, 255, 0.12)';
-        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-            handleAvatarFile(e.dataTransfer.files[0]);
-        }
-    });
 
-    avatarInput.addEventListener('change', (e) => {
-        if (e.target.files && e.target.files[0]) {
-            handleAvatarFile(e.target.files[0]);
-        }
-    });
-
-    btnRemoveAvatar.addEventListener('click', (e) => {
-        e.stopPropagation();
-        avatarImage = null;
-        avatarPreviewContainer.classList.add('hidden');
-        avatarPrompt.classList.remove('hidden');
-        avatarInput.value = '';
-    });
-
-    function handleAvatarFile(file) {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            const img = new Image();
-            img.onload = () => {
-                avatarImage = img;
-                avatarPreviewImg.src = event.target.result;
-                avatarPrompt.classList.add('hidden');
-                avatarPreviewContainer.classList.remove('hidden');
-            };
-            img.src = event.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
 
     // ----------------------------------------------------------------------
     // 6. MOTOR DE DIBUJO DEL CANVAS (ANIMACIONES 9:16)
@@ -738,7 +688,7 @@ function formatTime(sec) {
 
         // Sincronizar temporizador de batalla en el celular mockup
         const remaining = Math.max(0, Math.ceil(duration - timeSec));
-        if (battleTimer) {
+        if (dom.battleTimer) {
             dom.battleTimer.textContent = `00:${remaining < 10 ? '0' + remaining : remaining}`;
         }
 
@@ -757,176 +707,9 @@ function formatTime(sec) {
         animationFrameId = requestAnimationFrame(animate);
     }
 
-    function togglePlayPause() {
-        if (isPlaying) {
-            isPlaying = false;
-            btnPlayPauseIcon.textContent = '▶';
-            cancelAnimationFrame(animationFrameId);
-        } else {
-            isPlaying = true;
-            btnPlayPauseIcon.textContent = '⏸';
-            startTime = Date.now() - elapsedMs;
-            animate();
-        }
-    }
 
-    btnPlayPause.addEventListener('click', togglePlayPause);
 
-    // ----------------------------------------------------------------------
-    // 9. EVENT LISTENERS PARA CAMBIO DE PARÁMETROS EN VIVO
-    // ----------------------------------------------------------------------
-    tmplButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            tmplButtons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentTemplate = btn.dataset.template;
-            
-            // Cambiar textos predeterminados según la plantilla para agilizar al usuario
-            if (currentTemplate === 'tap') {
-                dom.inputTitle.value = "¡APOYEN LA FAMILIA!";
-                dom.inputSubtitle.value = "¡TOCA LA PANTALLA RÁPIDO!";
-                dom.colorPrimary.value = "#ff0050";
-                dom.colorSecondary.value = "#00f2fe";
-            } else if (currentTemplate === 'glove') {
-                dom.inputTitle.value = "¡EL GUANTE AHORA!";
-                dom.inputSubtitle.value = "¡ENVÍEN EL MULTIPLICADOR X5!";
-                dom.colorPrimary.value = "#ffd700";
-                dom.colorSecondary.value = "#ff0050";
-            } else if (currentTemplate === 'versus') {
-                dom.inputTitle.value = "¡BATALLA COMPLETA!";
-                dom.inputSubtitle.value = "¡NADIE SE ME QUEDE FUERA!";
-                dom.colorPrimary.value = "#ff3333";
-                dom.colorSecondary.value = "#00f2fe";
-            }
-            
-            // Forzar actualización de visuales en color pickers
-            colorPrimary.nextElementSibling.style.backgroundColor = dom.colorPrimary.value;
-            colorSecondary.nextElementSibling.style.backgroundColor = dom.colorSecondary.value;
-            
-            // Reiniciar arrays de partículas
-            particles = [];
-            floatingLikes = [];
-        });
-    });
 
-    selectDuration.addEventListener('change', (e) => {
-        duration = parseInt(e.target.value);
-        elapsedMs = 0;
-        startTime = Date.now();
-    });
-
-    selectFps.addEventListener('change', (e) => {
-        fps = parseInt(e.target.value);
-    });
-
-    // ----------------------------------------------------------------------
-    // 10. MOTOR DE EXPORTACIÓN Y GRABACIÓN (MediaRecorder)
-    // ----------------------------------------------------------------------
-    btnExport.addEventListener('click', async () => {
-        if (isExporting) return;
-        
-        isExporting = true;
-        isPlaying = false;
-        cancelAnimationFrame(animationFrameId);
-        
-        // Mostrar modal de progreso
-        exportProgressContainer.classList.remove('hidden');
-        exportProgressFill.style.width = '0%';
-        exportProgressText.textContent = '0%';
-
-        // Detener audio o reseteos previos
-        elapsedMs = 0;
-        let exportFrame = frameStart;
-        const totalFrames = frameEnd;
-        
-        // Capturar flujo del Canvas en alta resolución
-        // Especificar codec y bitrate alto para calidad cinematográfica neón
-        const stream = dom.canvas.captureStream(fps);
-        
-        let recorder;
-        const chunks = [];
-
-        try {
-            // Intentar con WebM que tiene soporte universal en Canvas capture
-            recorder = new MediaRecorder(stream, {
-                mimeType: 'video/webm;codecs=vp9,opus',
-                videoBitsPerSecond: 8000000 // 8 Mbps para nitidez extrema
-            });
-        } catch (e) {
-            // Fallback si VP9 no está disponible
-            recorder = new MediaRecorder(stream, {
-                mimeType: 'video/webm;codecs=vp8',
-                videoBitsPerSecond: 5000000
-            });
-        }
-
-        recorder.ondataavailable = (event) => {
-            if (event.data.size > 0) {
-                chunks.push(event.data);
-            }
-        };
-
-        recorder.onstop = () => {
-            // Convertir fragmentos en un solo archivo descargable
-            const blob = new Blob(chunks, { type: 'video/webm' });
-            const url = URL.createObjectURL(blob);
-            
-            // Simular clic de descarga automática
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `TokBattle_${currentTemplate}_${Date.now()}.webm`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            
-            // Limpiar y restaurar visuales del estudio
-            setTimeout(() => {
-                exportProgressContainer.classList.add('hidden');
-                isExporting = false;
-                isPlaying = true;
-                startTime = Date.now();
-                animate();
-            }, 1000);
-        };
-
-        // Iniciar la grabación
-        recorder.start();
-
-        // Función de dibujado de frames controlada paso a paso para la grabación perfecta
-        function drawExportFrame() {
-            if (exportFrame > totalFrames) {
-                recorder.stop();
-                return;
-            }
-
-            // Calcular tiempo teórico del fotograma actual
-            const theoreticalTimeSec = (exportFrame / fps);
-            
-            // Dibujar el lienzo de forma exacta
-            drawBackground(theoreticalTimeSec);
-            if (currentTemplate === 'tap') {
-                drawTemplateTap(theoreticalTimeSec);
-            } else if (currentTemplate === 'glove') {
-                drawTemplateGlove(theoreticalTimeSec);
-            } else if (currentTemplate === 'versus') {
-                drawTemplateVersus(theoreticalTimeSec);
-            }
-
-            // Actualizar interfaz del modal de progreso
-            const range = frameEnd - frameStart || 1;
-            const percent = Math.floor(((exportFrame - frameStart) / range) * 100);
-            exportProgressFill.style.width = `${percent}%`;
-            exportProgressText.textContent = `${percent}%`;
-
-            exportFrame++;
-            
-            // Ejecutar el siguiente fotograma asíncronamente
-            setTimeout(drawExportFrame, 1000 / fps);
-        }
-
-        // Lanzar bucle de exportación
-        drawExportFrame();
-    });
 
 
 export function initCanvas() {
@@ -1156,6 +939,104 @@ export function initCanvas() {
         frameStart = 0;
         frameEnd = total;
     });
+
+    // ----------------------------------------------------------------------
+    // 10. MOTOR DE EXPORTACIÓN Y GRABACIÓN (MediaRecorder)
+    // ----------------------------------------------------------------------
+    if (dom.btnExport) {
+        dom.btnExport.addEventListener('click', async () => {
+            if (isExporting) return;
+            
+            isExporting = true;
+            isPlaying = false;
+            cancelAnimationFrame(animationFrameId);
+            
+            // Mostrar modal de progreso
+            if (dom.exportProgressContainer) dom.exportProgressContainer.classList.remove('hidden');
+            if (dom.exportProgressFill) dom.exportProgressFill.style.width = '0%';
+            if (dom.exportProgressText) dom.exportProgressText.textContent = '0%';
+
+            // Detener audio o reseteos previos
+            elapsedMs = 0;
+            let exportFrame = frameStart;
+            const totalFrames = frameEnd;
+            
+            // Capturar flujo del Canvas en alta resolución
+            const stream = dom.canvas.captureStream(fps);
+            
+            let recorder;
+            const chunks = [];
+
+            try {
+                recorder = new MediaRecorder(stream, {
+                    mimeType: 'video/webm;codecs=vp9,opus',
+                    videoBitsPerSecond: 8000000
+                });
+            } catch (e) {
+                recorder = new MediaRecorder(stream, {
+                    mimeType: 'video/webm;codecs=vp8',
+                    videoBitsPerSecond: 5000000
+                });
+            }
+
+            recorder.ondataavailable = (event) => {
+                if (event.data.size > 0) {
+                    chunks.push(event.data);
+                }
+            };
+
+            recorder.onstop = () => {
+                const blob = new Blob(chunks, { type: 'video/webm' });
+                const url = URL.createObjectURL(blob);
+                
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `TokBattle_${currentTemplate}_${Date.now()}.webm`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
+                setTimeout(() => {
+                    if (dom.exportProgressContainer) dom.exportProgressContainer.classList.add('hidden');
+                    isExporting = false;
+                    isPlaying = true;
+                    startTime = Date.now();
+                    animate();
+                }, 1000);
+            };
+
+            recorder.start();
+
+            function drawExportFrame() {
+                if (exportFrame > totalFrames) {
+                    recorder.stop();
+                    return;
+                }
+
+                const theoreticalTimeSec = (exportFrame / fps);
+                
+                drawBackground(theoreticalTimeSec);
+                if (currentTemplate === 'tap') {
+                    drawTemplateTap(theoreticalTimeSec);
+                } else if (currentTemplate === 'glove') {
+                    drawTemplateGlove(theoreticalTimeSec);
+                } else if (currentTemplate === 'versus') {
+                    drawTemplateVersus(theoreticalTimeSec);
+                }
+
+                const range = frameEnd - frameStart || 1;
+                const percent = Math.floor(((exportFrame - frameStart) / range) * 100);
+                if (dom.exportProgressFill) dom.exportProgressFill.style.width = `${percent}%`;
+                if (dom.exportProgressText) dom.exportProgressText.textContent = `${percent}%`;
+
+                exportFrame++;
+                
+                setTimeout(drawExportFrame, 1000 / fps);
+            }
+
+            drawExportFrame();
+        });
+    }
 }
 
 // Getters y Setters para Gestión de Plantillas

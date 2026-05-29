@@ -125,11 +125,60 @@ function saveCurrentPreset() {
     renderSavedPresets();
 }
 
+// Validador de Esquema JSON para asegurar persistencia robusta
+function validatePresetSchema(preset) {
+    if (!preset || typeof preset !== 'object') return false;
+    if (typeof preset.id_efecto !== 'string') return false;
+    if (typeof preset.id_usuario !== 'string') return false;
+    if (typeof preset.nombre !== 'string') return false;
+    if (!['tap', 'glove', 'versus'].includes(preset.tipo_efecto)) return false;
+    
+    const config = preset.configuracion_visual;
+    if (!config || typeof config !== 'object') return false;
+    if (typeof config.color_primario !== 'string') return false;
+    if (typeof config.color_secundario !== 'string') return false;
+    if (typeof config.titulo !== 'string') return false;
+    if (typeof config.subtitulo !== 'string') return false;
+    if (config.avatar_url !== null && typeof config.avatar_url !== 'string') return false;
+    if (config.glove_url !== null && typeof config.glove_url !== 'string') return false;
+    
+    const timeline = preset.linea_tiempo_ar;
+    if (!timeline || typeof timeline !== 'object') return false;
+    if (typeof timeline.frame_start !== 'number') return false;
+    if (typeof timeline.frame_end !== 'number') return false;
+    if (typeof timeline.duration !== 'number') return false;
+    if (typeof timeline.fps !== 'number') return false;
+    
+    return true;
+}
+
+// Sanitizador XSS ultra liviano para inserciones seguras en el DOM
+function escapeHTML(str) {
+    if (!str) return '';
+    return str.replace(/[&<>'"]/g, 
+        tag => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            "'": '&#39;',
+            '"': '&quot;'
+        }[tag] || tag)
+    );
+}
+
 // Renderiza los presets guardados del usuario en el Dashboard
 export function renderSavedPresets() {
     if (!dom.savedTemplatesGrid || !dom.savedDesignsTitle) return;
 
-    const presets = JSON.parse(localStorage.getItem('winsnipe_presets')) || [];
+    let presets = [];
+    try {
+        presets = JSON.parse(localStorage.getItem('winsnipe_presets')) || [];
+    } catch (e) {
+        console.error("Error al parsear presets de localStorage:", e);
+    }
+    
+    // Filtrar y sanar la base de datos local usando el validador de esquema
+    presets = presets.filter(validatePresetSchema);
     
     if (presets.length === 0) {
         dom.savedTemplatesGrid.style.display = 'none';
@@ -163,22 +212,28 @@ export function renderSavedPresets() {
             previewBgClass = 'versus-preview-bg';
         }
 
-        // Si hay avatar personalizado, ponerlo en el badge o preview
+        // Si hay avatar personalizado, ponerlo en el badge o preview (es seguro porque proviene de FileReader DataURL o nulo)
         const hasAvatar = !!preset.configuracion_visual.avatar_url;
         const avatarHTML = hasAvatar ? `<img src="${preset.configuracion_visual.avatar_url}" style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid ${preset.configuracion_visual.color_secundario || '#00f2fe'}; object-fit: cover; position: absolute; bottom: 10px; right: 10px; box-shadow: 0 0 10px ${preset.configuracion_visual.color_secundario};" alt="Avatar">` : '';
 
+        // Sanitizar campos ingresados por usuario
+        const safeNombre = escapeHTML(preset.nombre);
+        const safeTitulo = escapeHTML(preset.configuracion_visual.titulo || 'Sin título');
+        const safeColorPrimario = escapeHTML(preset.configuracion_visual.color_primario);
+        const safeColorSecundario = escapeHTML(preset.configuracion_visual.color_secundario);
+
         card.innerHTML = `
             <div class="template-card-preview ${previewBgClass}">
-                <span class="template-badge" style="background: ${preset.configuracion_visual.color_primario}">Diseñado</span>
-                <div class="preview-animation-icon" style="color: ${preset.configuracion_visual.color_primario}">${typeIcon}</div>
+                <span class="template-badge" style="background: ${safeColorPrimario}">Diseñado</span>
+                <div class="preview-animation-icon" style="color: ${safeColorPrimario}">${typeIcon}</div>
                 ${avatarHTML}
             </div>
             <div class="template-card-info">
                 <h3 style="display: flex; align-items: center; justify-content: space-between;">
-                    <span>${preset.nombre}</span>
+                    <span>${safeNombre}</span>
                     <span style="font-size: 0.7rem; background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--glass-border);">${typeLabel}</span>
                 </h3>
-                <p>Configuración: ${preset.configuracion_visual.titulo || 'Sin título'} (${preset.linea_tiempo_ar.duration}s @ ${preset.linea_tiempo_ar.fps}fps)</p>
+                <p>Configuración: ${safeTitulo} (${preset.linea_tiempo_ar.duration}s @ ${preset.linea_tiempo_ar.fps}fps)</p>
                 <div class="preset-card-actions" style="display: flex; gap: 8px; margin-top: 10px;">
                     <button class="btn-edit-preset" data-id="${preset.id_efecto}" style="flex: 2; background: linear-gradient(135deg, var(--color-primary), var(--color-secondary)); border: none; color: #000; padding: 10px; border-radius: var(--radius-md); font-weight: 700; cursor: pointer; font-size: 0.8rem; transition: var(--transition-smooth);">Editar 🎨</button>
                     <button class="btn-duplicate-preset" data-id="${preset.id_efecto}" style="flex: 1; background: var(--bg-dark-700); border: 1px solid var(--glass-border); color: #fff; padding: 10px; border-radius: var(--radius-md); font-weight: 600; cursor: pointer; font-size: 0.8rem; transition: var(--transition-smooth);" title="Duplicar">👥</button>
@@ -194,7 +249,9 @@ export function renderSavedPresets() {
     document.querySelectorAll('.btn-edit-preset').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const id = e.target.dataset.id;
-            const preset = presets.find(p => p.id_efecto === id);
+            // Volver a cargar la lista filtrada y validada para evitar desajustes
+            const cleanPresets = (JSON.parse(localStorage.getItem('winsnipe_presets')) || []).filter(validatePresetSchema);
+            const preset = cleanPresets.find(p => p.id_efecto === id);
             if (preset) loadPresetIntoStudio(preset);
         });
     });
@@ -348,5 +405,4 @@ function hexToRgbA(hex, alpha) {
         return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+','+alpha+')';
     }
     return 'rgba(255, 0, 80, ' + alpha + ')';
-}
 }

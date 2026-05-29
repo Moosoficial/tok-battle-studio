@@ -6,8 +6,9 @@ let mainGroup, handGroup, gloveGroup, particlesGroup;
 let animationFrameId = null;
 let isRotating = false;
 let previousMousePosition = { x: 0, y: 0 };
-let textureLoader = new THREE.TextureLoader();
+let textureLoader = null;
 let gloveTexture = null;
+let velocities = [];
 
 // Materiales para poder actualizarlos dinámicamente
 let gloveMaterial, handMaterial, particleMaterial, glowLight;
@@ -15,6 +16,10 @@ let gloveMaterial, handMaterial, particleMaterial, glowLight;
 export function initThreeAR() {
     if (!dom.canvas3DContainer) return;
     if (scene) return; // Evitar inicializar dos veces
+
+    if (window.THREE && !textureLoader) {
+        textureLoader = new THREE.TextureLoader();
+    }
 
     // 1. Crear Escena
     scene = new THREE.Scene();
@@ -116,7 +121,7 @@ export function initThreeAR() {
     const particleCount = 180;
     const particleGeometry = new THREE.BufferGeometry();
     const positions = new Float32Array(particleCount * 3);
-    const velocities = [];
+    velocities = [];
 
     for (let i = 0; i < particleCount; i++) {
         // Inicializar posiciones en un patrón espiral orbital
