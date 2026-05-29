@@ -1,26 +1,64 @@
 /* ==========================================================================
-   TOKBATTLE STUDIO - premium design system
+   WINSNIPE DESIGN SYSTEM - CSS VARIABLES
    ========================================================================== */
 
-/* Variables y Tokens de Diseño */
 :root {
-    --bg-dark-900: #0a0a0c;
-    --bg-dark-800: #121217;
-    --bg-dark-700: #1a1a23;
-    --bg-dark-600: #252532;
-    --glass-bg: rgba(26, 26, 35, 0.45);
+    /* Stitch Dark Cyberpunk Theme Tokens */
+    --background: #13131b;
+    --on-background: #e4e1ed;
+    --surface: #13131b;
+    --on-surface: #e4e1ed;
+    --surface-dim: #13131b;
+    --surface-bright: #393842;
+    --surface-container-lowest: #0d0d16;
+    --surface-container-low: #1b1b23;
+    --surface-container: #1f1f27;
+    --surface-container-high: #292932;
+    --surface-container-highest: #34343d;
+    --surface-variant: #34343d;
+    --on-surface-variant: #e5bcc5;
+    
+    --primary: #ffb1c4;
+    --on-primary: #65002e;
+    --primary-container: #ff4a8d;
+    --on-primary-container: #590028;
+    
+    --secondary: #dcfdff;
+    --on-secondary: #00373a;
+    --secondary-container: #00f1fd;
+    --on-secondary-container: #006a6f;
+    
+    --tertiary: #dfb7ff;
+    --on-tertiary: #4b007e;
+    --tertiary-container: #ba6bff;
+    --on-tertiary-container: #41006f;
+    
+    --outline: #ac878f;
+    --outline-variant: #5c3f46;
+    
+    --error: #ffb4ab;
+    --on-error: #690005;
+    --error-container: #93000a;
+    --on-error-container: #ffdad6;
+
+    /* Legacy Vanilla Compat Variables (mapped to new design tokens) */
+    --bg-dark-900: var(--background);
+    --bg-dark-800: var(--surface-container-low);
+    --bg-dark-700: var(--surface-container);
+    --bg-dark-600: var(--surface-container-high);
+    --glass-bg: rgba(25, 25, 35, 0.45);
     --glass-border: rgba(255, 255, 255, 0.08);
     --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
     
-    --color-primary: #ff0050; /* Magenta TikTok */
-    --color-secondary: #00f2fe; /* Cian TikTok */
+    --color-primary: #ff0050; /* Magenta TikTok fallback */
+    --color-secondary: #00f2fe; /* Cian TikTok fallback */
     --color-gold: #ffd700;
     --color-red: #ff3333;
     --color-success: #00ff66;
     
-    --text-primary: #ffffff;
-    --text-secondary: #a0a0b5;
-    --text-muted: #6b6b7f;
+    --text-primary: var(--on-background);
+    --text-secondary: var(--on-surface-variant);
+    --text-muted: var(--outline);
     
     --font-primary: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     --font-heading: 'Space Grotesk', sans-serif;
@@ -30,19 +68,57 @@
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Modo Claro Minimalista Premium */
-.theme-light {
-    --bg-dark-900: #faf8ff;
-    --bg-dark-800: #ffffff;
-    --bg-dark-700: #f2f3ff;
-    --bg-dark-600: #e1e2ee;
+/* Light Theme Minimalist Premium (exact matching from Stitch Light Screen) */
+.theme-light, html.light {
+    --background: #faf8ff;
+    --on-background: #191b24;
+    --surface: #faf8ff;
+    --on-surface: #191b24;
+    --surface-dim: #d8d9e6;
+    --surface-bright: #faf8ff;
+    --surface-container-lowest: #ffffff;
+    --surface-container-low: #f2f3ff;
+    --surface-container: #ecedfa;
+    --surface-container-high: #e6e7f4;
+    --surface-container-highest: #e1e2ee;
+    --surface-variant: #e1e2ee;
+    --on-surface-variant: #424656;
+    
+    --primary: #0050cb;
+    --on-primary: #ffffff;
+    --primary-container: #0066ff;
+    --on-primary-container: #f8f7ff;
+    
+    --secondary: #a200ba;
+    --on-secondary: #ffffff;
+    --secondary-container: #ea57ff;
+    --on-secondary-container: #580066;
+    
+    --tertiary: #a33200;
+    --on-tertiary: #ffffff;
+    --tertiary-container: #cc4204;
+    --on-tertiary-container: #fff6f4;
+    
+    --outline: #727687;
+    --outline-variant: #c2c6d8;
+    
+    --error: #ba1a1a;
+    --on-error: #ffffff;
+    --error-container: #ffdad6;
+    --on-error-container: #93000a;
+
+    /* Legacy Vanilla Compat Variables (mapped to new light tokens) */
+    --bg-dark-900: var(--background);
+    --bg-dark-800: var(--surface-container-lowest);
+    --bg-dark-700: var(--surface-container-low);
+    --bg-dark-600: var(--surface-container);
     --glass-bg: rgba(255, 255, 255, 0.75);
     --glass-border: rgba(0, 102, 255, 0.12);
     --glass-shadow: 0 8px 32px 0 rgba(0, 102, 255, 0.08);
     
-    --text-primary: #191b24;
-    --text-secondary: #424656;
-    --text-muted: #8c90a1;
+    --text-primary: var(--on-background);
+    --text-secondary: var(--on-surface-variant);
+    --text-muted: var(--outline);
 }
 
 /* Reset y Base */
@@ -70,16 +146,17 @@ body {
 /* Scrollbars Personalizados */
 ::-webkit-scrollbar {
     width: 6px;
+    height: 6px;
 }
 ::-webkit-scrollbar-track {
     background: var(--bg-dark-900);
 }
 ::-webkit-scrollbar-thumb {
-    background: var(--bg-dark-600);
+    background: var(--surface-container-highest);
     border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-primary);
+    background: var(--primary-container);
 }
 
 /* Layout Principal */
@@ -89,6 +166,7 @@ body {
     height: 100vh;
     width: 100vw;
 }
+
 /* Secciones de Vista */
 .view-section {
     display: flex;

@@ -395,7 +395,8 @@ function formatTime(sec) {
         drawStreamerAvatar(centerX, centerY - 520, 110);
 
         // Guantelete Gigante de Boxeo (Emoji con brillo extremo y escala dinámica)
-        const gloveScale = 1.0 + Math.abs(Math.sin(timeSec * Math.PI * 2)) * 0.12;
+        const scaleFactor = dom.inputScale ? (parseFloat(dom.inputScale.value) / 100) : 1.0;
+        const gloveScale = (1.0 + Math.abs(Math.sin(timeSec * Math.PI * 2)) * 0.12) * scaleFactor;
         dom.ctx.save();
         dom.ctx.translate(centerX, centerY - 120);
         dom.ctx.scale(gloveScale, gloveScale);
@@ -718,10 +719,14 @@ export function initCanvas() {
 
     dom.colorPrimary.addEventListener('input', (e) => {
         e.target.nextElementSibling.style.backgroundColor = e.target.value;
+        const textElement = document.getElementById('color-primary-text');
+        if (textElement) textElement.textContent = e.target.value.toUpperCase();
         updateColorsFromDOM(); // Sincronizar en 3D
     });
     dom.colorSecondary.addEventListener('input', (e) => {
         e.target.nextElementSibling.style.backgroundColor = e.target.value;
+        const textElement = document.getElementById('color-secondary-text');
+        if (textElement) textElement.textContent = e.target.value.toUpperCase();
         updateColorsFromDOM(); // Sincronizar en 3D
     });
 
@@ -1037,6 +1042,86 @@ export function initCanvas() {
             drawExportFrame();
         });
     }
+
+    // --- ENLACE DE CONTROLES PREMIUM DE STITCH Y MICRO-INTERACCIONES ---
+    
+    // 1. Deslizadores de Timeline (Start / End) y sus etiquetas numéricas
+    if (dom.inputFrameStart && dom.lblFrameStart) {
+        dom.lblFrameStart.textContent = dom.inputFrameStart.value;
+        dom.inputFrameStart.addEventListener('input', (e) => {
+            dom.lblFrameStart.textContent = e.target.value;
+        });
+    }
+    if (dom.inputFrameEnd && dom.lblFrameEnd) {
+        dom.lblFrameEnd.textContent = dom.inputFrameEnd.value;
+        dom.inputFrameEnd.addEventListener('input', (e) => {
+            dom.lblFrameEnd.textContent = e.target.value;
+        });
+    }
+
+    // 2. Control de Escala (Scale Engine)
+    if (dom.inputScale && dom.lblScale) {
+        dom.lblScale.textContent = (parseFloat(dom.inputScale.value) / 100).toFixed(1) + 'x';
+        dom.inputScale.addEventListener('input', (e) => {
+            dom.lblScale.textContent = (parseFloat(e.target.value) / 100).toFixed(1) + 'x';
+        });
+    }
+
+    // 3. Velocidad de ascenso de partículas
+    if (dom.inputRiseSpeed && dom.lblRiseSpeed) {
+        dom.lblRiseSpeed.textContent = parseFloat(dom.inputRiseSpeed.value).toFixed(1) + ' m/s';
+        dom.inputRiseSpeed.addEventListener('input', (e) => {
+            dom.lblRiseSpeed.textContent = parseFloat(e.target.value).toFixed(1) + ' m/s';
+        });
+    }
+
+    // 4. Dispersión de partículas
+    if (dom.inputDispersion && dom.lblDispersion) {
+        dom.lblDispersion.textContent = parseFloat(dom.inputDispersion.value).toFixed(1);
+        dom.inputDispersion.addEventListener('input', (e) => {
+            dom.lblDispersion.textContent = parseFloat(e.target.value).toFixed(1);
+        });
+    }
+
+    // 5. Parallax interactivo del Smartphone al pasar el mouse
+    if (dom.phoneSimulationFrame) {
+        dom.phoneSimulationFrame.addEventListener('mousemove', (e) => {
+            const rect = dom.phoneSimulationFrame.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width - 0.5;
+            const y = (e.clientY - rect.top) / rect.height - 0.5;
+            
+            dom.phoneSimulationFrame.style.transform = `perspective(1000px) rotateY(${x * 12}deg) rotateX(${-y * 12}deg)`;
+        });
+
+        dom.phoneSimulationFrame.addEventListener('mouseleave', () => {
+            dom.phoneSimulationFrame.style.transform = `perspective(1000px) rotateY(0deg) rotateX(0deg)`;
+        });
+    }
+
+    // 6. Toggles visuales de los checkmarks de las Plantillas
+    dom.tmplButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tmpl = btn.dataset.template;
+            
+            // Toggle checkmarks
+            const checkTap = document.getElementById('tmpl-active-tap');
+            const checkGlove = document.getElementById('tmpl-active-glove');
+            const checkVersus = document.getElementById('tmpl-active-versus');
+            
+            if (checkTap) {
+                if (tmpl === 'tap') checkTap.classList.remove('hidden');
+                else checkTap.classList.add('hidden');
+            }
+            if (checkGlove) {
+                if (tmpl === 'glove') checkGlove.classList.remove('hidden');
+                else checkGlove.classList.add('hidden');
+            }
+            if (checkVersus) {
+                if (tmpl === 'versus') checkVersus.classList.remove('hidden');
+                else checkVersus.classList.add('hidden');
+            }
+        });
+    });
 }
 
 // Getters y Setters para Gestión de Plantillas

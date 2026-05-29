@@ -94,6 +94,18 @@ export function initDOM() {
     dom.btnMode2D = document.getElementById('btn-mode-2d');
     dom.btnMode3D = document.getElementById('btn-mode-3d');
     dom.canvas3DContainer = document.getElementById('canvas3d-container');
+    
+    // Controles dinámicos premium adicionales
+    dom.inputScale = document.getElementById('input-scale');
+    dom.lblScale = document.getElementById('lbl-scale');
+    dom.inputRiseSpeed = document.getElementById('input-rise-speed');
+    dom.lblRiseSpeed = document.getElementById('lbl-rise-speed');
+    dom.inputDispersion = document.getElementById('input-dispersion');
+    dom.lblDispersion = document.getElementById('lbl-dispersion');
+    
+    dom.phoneSimulationFrame = document.getElementById('phone-simulation-frame');
+    dom.lblFrameStart = document.getElementById('lbl-frame-start');
+    dom.lblFrameEnd = document.getElementById('lbl-frame-end');
 }
 
 export const mockComments = [

@@ -335,7 +335,9 @@ export function startThreeAR() {
 
         // 2. Latido de escala neón (efecto de poder)
         if (gloveGroup) {
-            const scalePulse = 1.0 + Math.abs(Math.sin(time * Math.PI)) * 0.06;
+            const scaleInput = document.getElementById('input-scale');
+            const scaleFactor = scaleInput ? (parseFloat(scaleInput.value) / 100) : 1.0;
+            const scalePulse = (1.0 + Math.abs(Math.sin(time * Math.PI)) * 0.06) * scaleFactor;
             gloveGroup.scale.set(scalePulse, scalePulse, scalePulse);
         }
 
@@ -344,6 +346,12 @@ export function startThreeAR() {
             const sparks = particlesGroup.children[0];
             const positions = sparks.geometry.attributes.position.array;
             const count = positions.length / 3;
+
+            const speedInput = document.getElementById('input-rise-speed');
+            const speedMultiplier = speedInput ? (parseFloat(speedInput.value) / 5) : 1.0;
+
+            const dispersionInput = document.getElementById('input-dispersion');
+            const dispersionMultiplier = dispersionInput ? (parseFloat(dispersionInput.value) / 3) : 1.0;
 
             for (let i = 0; i < count; i++) {
                 const vel = velocities[i];
@@ -354,16 +362,17 @@ export function startThreeAR() {
                 let y = positions[i * 3 + 1];
 
                 const currentAngle = Math.atan2(z, x);
-                const nextAngle = currentAngle + vel.speed * delta;
+                // La velocidad de giro se ve afectada por la velocidad de ascenso
+                const nextAngle = currentAngle + vel.speed * delta * speedMultiplier;
                 
-                // Radio orbital con leve oscilación pulsante
-                const pulseRadius = vel.initialRadius + Math.sin(time * 2.0 + i) * 0.08;
+                // Radio orbital con leve oscilación pulsante y dispersion
+                const pulseRadius = (vel.initialRadius + Math.sin(time * 2.0 + i) * 0.08) * dispersionMultiplier;
                 
                 positions[i * 3] = pulseRadius * Math.cos(nextAngle);
                 positions[i * 3 + 2] = pulseRadius * Math.sin(nextAngle);
 
                 // Elevación vertical ascendente con reciclaje
-                y += vel.upSpeed * delta;
+                y += vel.upSpeed * delta * speedMultiplier;
                 if (y > 1.3) {
                     y = -1.2; // Resetear al fondo de la muñeca
                 }
@@ -371,7 +380,7 @@ export function startThreeAR() {
             }
 
             sparks.geometry.attributes.position.needsUpdate = true;
-            particlesGroup.rotation.y = time * 0.15; // Rotación lenta grupal
+            particlesGroup.rotation.y = time * 0.15 * speedMultiplier; // Rotación lenta grupal
         }
 
         renderer.render(scene, camera);

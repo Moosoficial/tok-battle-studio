@@ -5,15 +5,143 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TokBattle Studio - Creador de Videos para Live de TikTok</title>
     <meta name="description" content="Genera videos y alertas personalizadas para batallas y transmisiones de TikTok Lives con estética neón premium e instantánea.">
-    <!-- Google Fonts: Outfit (moderno) & Space Grotesk (futurista/gaming) -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/landing.css">
     <link rel="stylesheet" href="css/auth.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/studio.css">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "var(--primary)",
+                        "on-primary": "var(--on-primary)",
+                        "primary-container": "var(--primary-container)",
+                        "on-primary-container": "var(--on-primary-container)",
+                        secondary: "var(--secondary)",
+                        "on-secondary": "var(--on-secondary)",
+                        "secondary-container": "var(--secondary-container)",
+                        "on-secondary-container": "var(--on-secondary-container)",
+                        tertiary: "var(--tertiary)",
+                        "on-tertiary": "var(--on-tertiary)",
+                        "tertiary-container": "var(--tertiary-container)",
+                        "on-tertiary-container": "var(--on-tertiary-container)",
+                        surface: "var(--surface)",
+                        "on-surface": "var(--on-surface)",
+                        "surface-dim": "var(--surface-dim)",
+                        "surface-bright": "var(--surface-bright)",
+                        "surface-container-lowest": "var(--surface-container-lowest)",
+                        "surface-container-low": "var(--surface-container-low)",
+                        "surface-container": "var(--surface-container)",
+                        "surface-container-high": "var(--surface-container-high)",
+                        "surface-container-highest": "var(--surface-container-highest)",
+                        "surface-variant": "var(--surface-variant)",
+                        "on-surface-variant": "var(--on-surface-variant)",
+                        outline: "var(--outline)",
+                        "outline-variant": "var(--outline-variant)",
+                        background: "var(--background)",
+                        "on-background": "var(--on-background)",
+                        error: "var(--error)",
+                        "on-error": "var(--on-error)",
+                        "error-container": "var(--error-container)",
+                        "on-error-container": "var(--on-error-container)",
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px"
+                    },
+                    fontFamily: {
+                        headline: ["'Plus Jakarta Sans'", "sans-serif"],
+                        body: ["'Outfit'", "sans-serif"],
+                        display: ["'Space Grotesk'", "sans-serif"],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+        }
+        .neon-border-gradient {
+            background: linear-gradient(90deg, rgba(255,177,196,0.3) 0%, rgba(255,177,196,0) 100%);
+            height: 1px;
+            width: 100%;
+        }
+        .neon-glow-primary {
+            box-shadow: 0 0 20px rgba(255, 74, 141, 0.4);
+        }
+        .neon-glow-secondary {
+            box-shadow: 0 0 20px rgba(0, 241, 253, 0.4);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Range input customizations */
+        input[type="range"] {
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        input[type="range"]::-webkit-slider-runnable-track {
+            height: 4px;
+            background: var(--surface-container-highest);
+            border-radius: 2px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 14px;
+            width: 14px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            margin-top: -5px;
+            box-shadow: 0 0 8px var(--primary);
+            transition: var(--transition-smooth);
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: var(--surface-container-high);
+            border-radius: 10px;
+        }
+        /* Pulse animation for Live Badge */
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .animate-pulse-red {
+            animation: pulse-red 2s infinite;
+        }
+    </style>
 </head>
 <body>
     <!-- 1. VISTA DE BIENVENIDA (LANDING PAGE) -->
@@ -165,262 +293,346 @@
     </div>
 
     <!-- 4. VISTA DE ESTUDIO DE PERSONALIZACIÓN -->
-    <div id="view-studio" class="view-section app-container hidden">
-        <!-- Panel de Control Lateral -->
-        <aside class="sidebar" id="control-panel">
-            <header class="sidebar-header">
-                <div class="logo-row" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                    <div class="logo">
-                        <span class="logo-glow">TOK</span>
-                        <span class="logo-solid">BATTLE</span>
+    <div id="view-studio" class="view-section hidden relative w-screen h-screen bg-background text-on-surface select-none overflow-hidden flex flex-row font-body">
+        
+        <!-- Left Sidebar (Control Panel) -->
+        <aside class="w-[360px] h-full bg-surface-container-lowest/95 backdrop-blur-2xl border-r border-outline-variant/20 flex flex-col z-20 shrink-0 shadow-2xl relative">
+            
+            <!-- Header -->
+            <header class="p-5 border-b border-outline-variant/10">
+                <div class="flex justify-between items-center mb-3">
+                    <div class="flex items-center gap-2 text-primary font-bold font-headline text-lg">
+                        <span class="material-symbols-outlined fill text-[24px]">track_changes</span>
+                        WinSnipe
                     </div>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <button class="btn-theme-toggle" id="btn-studio-theme-toggle" style="background: transparent; border: 1px solid var(--glass-border); border-radius: 50%; width: 30px; height: 30px; color: var(--text-primary); cursor: pointer; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; transition: var(--transition-smooth);" title="Cambiar Tema">☀️</button>
-                        <button class="btn-back-dashboard" id="btn-back-dashboard" style="background: transparent; border: 1px solid var(--glass-border); padding: 5px 10px; border-radius: var(--radius-sm); color: var(--text-secondary); cursor: pointer; font-size: 0.75rem;">✕ Volver</button>
-                    </div>
+                    <button class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 font-headline text-xs cursor-pointer border border-outline-variant/10 px-2 py-1 rounded bg-surface-container-low" id="btn-back-dashboard">
+                        <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                        Volver
+                    </button>
                 </div>
-                <p class="subtitle">Creador de Contenido Neón para tus Batallas</p>
+                <h2 class="font-body text-xs text-on-surface-variant leading-relaxed">Creador de Contenido Neón para tus Batallas</h2>
             </header>
 
-            <section class="section-group">
-                <h3 class="section-title">1. Selecciona tu Plantilla</h3>
-                <div class="template-selector">
-                    <button class="template-btn active" id="btn-tmpl-tap" data-template="tap">
-                        <span class="btn-icon">⚡</span>
-                        <div class="btn-text">
-                            <strong>Doble Tap</strong>
-                            <span>Pulso neón & Likes</span>
-                        </div>
-                    </button>
-                    <button class="template-btn" id="btn-tmpl-glove" data-template="glove">
-                        <span class="btn-icon">🥊</span>
-                        <div class="btn-text">
-                            <strong>El Guante (x5)</strong>
-                            <span>Cuenta regresiva</span>
-                        </div>
-                    </button>
-                    <button class="template-btn" id="btn-tmpl-versus" data-template="versus">
-                        <span class="btn-icon">⚔️</span>
-                        <div class="btn-text">
-                            <strong>Fuego Cruzado VS</strong>
-                            <span>Fondo dinámico dual</span>
-                        </div>
-                    </button>
-                </div>
-            </section>
+            <!-- Scrollable Content -->
+            <div class="flex-1 overflow-y-auto p-5 space-y-6 custom-scrollbar">
+                
+                <!-- Group 1 (Plantilla) -->
+                <section class="space-y-3">
+                    <h3 class="font-headline text-xs text-on-surface font-bold uppercase tracking-widest opacity-70 flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[16px] text-primary">auto_awesome</span> Plantilla
+                    </h3>
+                    <div class="space-y-2">
+                        <button class="template-btn w-full bg-surface-container hover:bg-surface-container-high text-on-surface font-semibold px-4 py-3 rounded-lg flex items-center justify-between transition-all cursor-pointer" id="btn-tmpl-tap" data-template="tap">
+                            <span class="flex items-center gap-3 text-xs">
+                                <span class="material-symbols-outlined text-[18px]">bolt</span> Doble Tap
+                            </span>
+                            <span class="material-symbols-outlined text-sm text-primary" id="tmpl-active-tap">check_circle</span>
+                        </button>
+                        <button class="template-btn w-full bg-surface-container hover:bg-surface-container-high text-on-surface font-semibold px-4 py-3 rounded-lg flex items-center justify-between transition-all cursor-pointer" id="btn-tmpl-glove" data-template="glove">
+                            <span class="flex items-center gap-3 text-xs">
+                                <span>🥊</span> El Guante (x5)
+                            </span>
+                            <span class="material-symbols-outlined text-sm text-primary hidden" id="tmpl-active-glove">check_circle</span>
+                        </button>
+                        <button class="template-btn w-full bg-surface-container hover:bg-surface-container-high text-on-surface font-semibold px-4 py-3 rounded-lg flex items-center justify-between transition-all cursor-pointer" id="btn-tmpl-versus" data-template="versus">
+                            <span class="flex items-center gap-3 text-xs">
+                                <span>⚔️</span> Fuego Cruzado VS
+                            </span>
+                            <span class="material-symbols-outlined text-sm text-primary hidden" id="tmpl-active-versus">check_circle</span>
+                        </button>
+                    </div>
+                </section>
 
-            <section class="section-group">
-                <h3 class="section-title">2. Personaliza el Texto</h3>
-                <div class="input-wrapper">
-                    <label for="input-title">Texto Principal</label>
-                    <input type="text" id="input-title" value="¡APOYEN LA FAMILIA!" placeholder="Ej. ¡DOBLE TAP AHORA!">
-                </div>
-                <div class="input-wrapper">
-                    <label for="input-subtitle">Subtexto / Llamado a la Acción</label>
-                    <input type="text" id="input-subtitle" value="¡TOCA LA PANTALLA RÁPIDO!" placeholder="Ej. ¡MULTIPLIQUEN X5 CON EL GUANTE!">
-                </div>
-            </section>
-
-            <section class="section-group">
-                <h3 class="section-title">3. Configura tu Estilo</h3>
-                <div class="style-row">
-                    <div class="input-wrapper half">
-                        <label for="color-primary">Color Principal</label>
-                        <div class="color-picker-container">
-                            <input type="color" id="color-primary" value="#ff0050">
-                            <span class="color-preview" style="background-color: #ff0050"></span>
+                <!-- Group 2 (Texto) -->
+                <section class="space-y-3">
+                    <h3 class="font-headline text-xs text-on-surface font-bold uppercase tracking-widest opacity-70 flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[16px] text-primary">edit_note</span> Texto
+                    </h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block font-headline text-[10px] text-on-surface-variant mb-1">Texto Principal</label>
+                            <input class="w-full bg-surface-container border-0 rounded-lg px-3 py-2 font-body text-xs text-on-surface focus:ring-2 focus:ring-primary focus:bg-surface-container-high transition-all" type="text" id="input-title" value="¡APOYEN LA FAMILIA!" placeholder="Ej. ¡DOBLE TAP!"/>
+                        </div>
+                        <div>
+                            <label class="block font-headline text-[10px] text-on-surface-variant mb-1">Subtexto</label>
+                            <input class="w-full bg-surface-container border-0 rounded-lg px-3 py-2 font-body text-xs text-on-surface focus:ring-2 focus:ring-primary focus:bg-surface-container-high transition-all" type="text" id="input-subtitle" value="¡TOCA LA PANTALLA RÁPIDO!" placeholder="Ej. ¡TOCA LA PANTALLA RÁPIDO!"/>
                         </div>
                     </div>
-                    <div class="input-wrapper half">
-                        <label for="color-secondary">Color Secundario</label>
-                        <div class="color-picker-container">
-                            <input type="color" id="color-secondary" value="#00f2fe">
-                            <span class="color-preview" style="background-color: #00f2fe"></span>
-                        </div>
-                    </div>
-                </div>
+                </section>
 
-                <div class="input-wrapper">
-                    <label>Tu Foto de Perfil (Streamer)</label>
-                    <div class="file-upload-zone" id="avatar-drop-zone">
-                        <input type="file" id="avatar-input" accept="image/*" class="file-hidden">
-                        <div class="upload-prompt" id="avatar-prompt">
-                            <span class="upload-icon">👤</span>
-                            <span>Sube tu foto de perfil</span>
-                            <small>Soporta PNG, JPG (Se recorta en círculo automáticamente)</small>
-                        </div>
-                        <div class="upload-preview hidden" id="avatar-preview-container">
-                            <img id="avatar-preview-img" src="" alt="Avatar de Streamer">
-                            <button type="button" class="btn-remove-avatar" id="btn-remove-avatar">Eliminar ✕</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="input-wrapper">
-                    <label>Guante de Boxeo o Logotipo Personalizado</label>
-                    <div class="file-upload-zone" id="glove-drop-zone" style="position: relative;">
-                        <input type="file" id="glove-input" accept="image/png" class="file-hidden">
-                        <div class="upload-prompt" id="glove-prompt">
-                            <span class="upload-icon">🥊</span>
-                            <span>Sube tu guante o logo (PNG Transparente)</span>
-                            <small>Soporta imágenes .PNG nítidas hasta 5MB</small>
-                        </div>
-                        <div class="upload-preview hidden" id="glove-preview-container">
-                            <img id="glove-preview-img" src="" alt="Guante de Boxeo Personalizado" style="max-height: 80px; object-fit: contain;">
-                            <button type="button" class="btn-remove-glove" id="btn-remove-glove" style="position: absolute; top: 10px; right: 10px; background: rgba(255, 51, 80, 0.2); border: 1px solid var(--color-primary); color: white; border-radius: var(--radius-sm); padding: 2px 8px; cursor: pointer;">Eliminar ✕</button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="section-group">
-                <h3 class="section-title">4. Parámetros del Video</h3>
-                <div class="style-row">
-                    <div class="input-wrapper half">
-                        <label for="select-duration">Duración</label>
-                        <select id="select-duration">
-                            <option value="5">5 Segundos</option>
-                            <option value="10" selected>10 Segundos</option>
-                            <option value="15">15 Segundos</option>
-                            <option value="20">20 Segundos</option>
-                        </select>
-                    </div>
-                    <div class="input-wrapper half">
-                        <label for="select-fps">FPS (Fluidez)</label>
-                        <select id="select-fps">
-                            <option value="30">30 FPS (Lero)</option>
-                            <option value="60" selected>60 FPS (Ultra Suave)</option>
-                        </select>
-                    </div>
-                </div>
-            </section>
-
-            <section class="section-group">
-                <h3 class="section-title">5. Rango de Animación (Frames)</h3>
-                <div class="style-row">
-                    <div class="input-wrapper half">
-                        <label for="input-frame-start">Frame Inicio</label>
-                        <input type="number" id="input-frame-start" value="0" min="0" max="600" style="width: 100%; background: var(--bg-dark-900); border: 1px solid var(--glass-border); padding: 8px; border-radius: var(--radius-sm); color: var(--text-primary);">
-                    </div>
-                    <div class="input-wrapper half">
-                        <label for="input-frame-end">Frame Fin</label>
-                        <input type="number" id="input-frame-end" value="600" min="0" max="600" style="width: 100%; background: var(--bg-dark-900); border: 1px solid var(--glass-border); padding: 8px; border-radius: var(--radius-sm); color: var(--text-primary);">
-                    </div>
-                </div>
-                <div style="margin-top: 10px;">
-                    <small style="color: var(--text-secondary); font-size: 0.75rem; display: block; text-align: center;">Bucle de reproducción limitado por fotogramas clave</small>
-                </div>
-            </section>
-        </aside>
-
-        <!-- Visualizador y Simulador de Video 9:16 -->
-        <section class="studio-workplace">
-            <div class="simulator-wrapper" style="flex-direction: column;">
-                <!-- Simulator Mode Toggle -->
-                <div class="simulator-mode-toggle" style="display: flex; gap: 8px; margin-bottom: 12px; background: rgba(5, 5, 8, 0.6); padding: 4px; border-radius: 30px; border: 1px solid var(--glass-border); z-index: 10;">
-                    <button class="mode-toggle-btn active" id="btn-mode-2d" style="background: var(--color-primary); border: none; padding: 6px 14px; border-radius: 30px; color: white; cursor: pointer; font-size: 0.75rem; font-weight: 700; transition: var(--transition-smooth);">Overlay 2D ⚡</button>
-                    <button class="mode-toggle-btn" id="btn-mode-3d" style="background: transparent; border: none; padding: 6px 14px; border-radius: 30px; color: var(--text-secondary); cursor: pointer; font-size: 0.75rem; font-weight: 700; transition: var(--transition-smooth);">Hand AR 3D 🥊</button>
-                </div>
-                <div class="smartphone-frame">
-                    <div class="smartphone-screen">
-                        <!-- Canvas principal para dibujo y exportación -->
-                        <canvas id="studio-canvas" width="1080" height="1920"></canvas>
-                        <!-- Canvas de Three.js para previsualización AR 3D -->
-                        <div id="canvas3d-container" class="hidden" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 2;"></div>
-                        
-                        <!-- Overlay interactivo para previsualización HTML -->
-                        <div class="screen-overlay">
-                            <div class="tiktok-header">
-                                <span class="live-badge">LIVE</span>
-                                <div class="live-info">
-                                    <span class="live-title">Batalla Oficial</span>
-                                    <span class="viewers">🔥 4.2k en vivo</span>
+                <!-- Group 3 (Estilo & Colores) -->
+                <section class="space-y-3">
+                    <h3 class="font-headline text-xs text-on-surface font-bold uppercase tracking-widest opacity-70 flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[16px] text-primary">palette</span> Estilo & Color
+                    </h3>
+                    <div class="space-y-4">
+                        <!-- Color Pickers -->
+                        <div class="flex gap-4">
+                            <div class="flex-1">
+                                <label class="block font-headline text-[10px] text-on-surface-variant mb-1">Color 1</label>
+                                <div class="flex items-center gap-2 bg-surface-container p-2 rounded-lg relative cursor-pointer border border-outline-variant/10">
+                                    <div class="relative w-6 h-6">
+                                        <input type="color" id="color-primary" value="#FF0050" class="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10">
+                                        <div class="color-picker-dot w-6 h-6 rounded-full shadow-inner" style="background-color: #FF0050;"></div>
+                                    </div>
+                                    <span class="font-body text-[10px] text-on-surface-variant font-bold" id="color-primary-text">#FF0050</span>
                                 </div>
                             </div>
-                            
-                            <!-- Marcador competitivo de batalla -->
-                            <div class="simulated-battle-bar" id="simulated-battle-bar">
-                                <div class="battle-blue-team" id="battle-blue-team" style="width: 50%;">
-                                    <span class="score-team-blue" id="score-team-blue">24.5k</span>
-                                </div>
-                                <div class="battle-red-team" id="battle-red-team" style="width: 50%;">
-                                    <span class="score-team-red" id="score-team-red">24.5k</span>
-                                </div>
-                                <div class="battle-timer" id="battle-timer">00:10</div>
-                            </div>
-
-                            <!-- Acciones flotantes a la derecha -->
-                            <div class="simulated-right-actions">
-                                <div class="sim-action-btn">
-                                    <span class="sim-icon">👤</span>
-                                    <small>Seguir</small>
-                                </div>
-                                <div class="sim-action-btn">
-                                    <span class="sim-icon">💬</span>
-                                    <small>248</small>
-                                </div>
-                                <div class="sim-action-btn">
-                                    <span class="sim-icon">❤️</span>
-                                    <small>5.1k</small>
-                                </div>
-                                <div class="sim-action-btn">
-                                    <span class="sim-icon">🎁</span>
-                                    <small>Regalo</small>
+                            <div class="flex-1">
+                                <label class="block font-headline text-[10px] text-on-surface-variant mb-1">Color 2</label>
+                                <div class="flex items-center gap-2 bg-surface-container p-2 rounded-lg relative cursor-pointer border border-outline-variant/10">
+                                    <div class="relative w-6 h-6">
+                                        <input type="color" id="color-secondary" value="#00F2FE" class="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10">
+                                        <div class="color-picker-dot w-6 h-6 rounded-full shadow-inner" style="background-color: #00F2FE;"></div>
+                                    </div>
+                                    <span class="font-body text-[10px] text-on-surface-variant font-bold" id="color-secondary-text">#00F2FE</span>
                                 </div>
                             </div>
-                            
-                            <div class="tiktok-footer">
-                                <!-- Caja de chat en directo simulada -->
-                                <div class="simulated-chat-box" id="simulated-chat-box">
-                                    <!-- Comentarios dinámicos mock -->
+                        </div>
+                        <!-- Avatar Upload -->
+                        <div>
+                            <label class="block font-headline text-[10px] text-on-surface-variant mb-1">Foto de Perfil / Avatar</label>
+                            <div class="w-full border border-dashed border-outline-variant/60 hover:border-primary bg-surface-container rounded-xl p-3 flex flex-col items-center justify-center gap-2 cursor-pointer transition-colors group relative" id="avatar-drop-zone">
+                                <input type="file" id="avatar-input" accept="image/*" class="hidden">
+                                <div class="flex flex-col items-center justify-center gap-2 text-center" id="avatar-prompt">
+                                    <span class="material-symbols-outlined text-2xl text-on-surface-variant group-hover:text-primary transition-colors">add_photo_alternate</span>
+                                    <span class="font-body text-[10px] text-on-surface-variant group-hover:text-primary transition-colors text-center">Sube tu foto de perfil</span>
                                 </div>
-                                
-                                <div class="streamer-tag" id="streamer-tag">@tu_usuario</div>
-                                <div class="battle-desc">¡Doble Tap rápido familia! 🚀⚡</div>
+                                <div class="hidden flex flex-col items-center justify-center gap-2 w-full" id="avatar-preview-container">
+                                    <img id="avatar-preview-img" src="" alt="Avatar" class="w-12 h-12 rounded-full object-cover border-2 border-primary">
+                                    <button type="button" class="text-[9px] bg-error/20 border border-error/50 text-error px-2 py-0.5 rounded hover:bg-error/30 transition-all font-bold" id="btn-remove-avatar">Eliminar ✕</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Glove Upload -->
+                        <div>
+                            <label class="block font-headline text-[10px] text-on-surface-variant mb-1">Glove / Logo Personalizado (PNG)</label>
+                            <div class="w-full border border-dashed border-outline-variant/60 hover:border-secondary bg-surface-container rounded-xl p-3 flex flex-col items-center justify-center gap-2 cursor-pointer transition-colors group relative" id="glove-drop-zone">
+                                <input type="file" id="glove-input" accept="image/png" class="hidden">
+                                <div class="flex flex-col items-center justify-center gap-2 text-center" id="glove-prompt">
+                                    <span class="material-symbols-outlined text-2xl text-on-surface-variant group-hover:text-secondary transition-colors">sports_mma</span>
+                                    <span class="font-body text-[10px] text-on-surface-variant group-hover:text-secondary transition-colors text-center">Sube tu guante neón</span>
+                                </div>
+                                <div class="hidden flex flex-col items-center justify-center gap-2 w-full" id="glove-preview-container">
+                                    <img id="glove-preview-img" src="" alt="Guante" class="h-12 object-contain border-2 border-secondary p-1 rounded">
+                                    <button type="button" class="text-[9px] bg-error/20 border border-error/50 text-error px-2 py-0.5 rounded hover:bg-error/30 transition-all font-bold" id="btn-remove-glove">Eliminar ✕</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </section>
+
+                <!-- Group 4 (Efectos & Partículas) -->
+                <section class="space-y-3">
+                    <h3 class="font-headline text-xs text-on-surface font-bold uppercase tracking-widest opacity-70 flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[16px] text-primary">grain</span> Partículas & Motor
+                    </h3>
+                    <div class="space-y-3 bg-surface-container/30 p-3 rounded-lg border border-outline-variant/10">
+                        <!-- Scale Slider -->
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-body text-[10px] text-on-surface-variant">Uniform Scale</span>
+                                <span class="font-display text-[10px] bg-surface-container-high px-1.5 py-0.5 rounded text-secondary font-bold" id="lbl-scale">1.0x</span>
+                            </div>
+                            <input class="w-full cursor-pointer accent-secondary" max="140" min="60" type="range" value="100" id="input-scale"/>
+                        </div>
+                        <!-- Rise Speed Slider -->
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-body text-[10px] text-on-surface-variant">Rise Speed</span>
+                                <span class="font-display text-[10px] bg-surface-container-high px-1.5 py-0.5 rounded text-primary font-bold" id="lbl-rise-speed">5.0 m/s</span>
+                            </div>
+                            <input class="w-full cursor-pointer accent-primary" max="15" min="1" type="range" value="5" id="input-rise-speed"/>
+                        </div>
+                        <!-- Dispersion Slider -->
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-body text-[10px] text-on-surface-variant">Dispersion</span>
+                                <span class="font-display text-[10px] bg-surface-container-high px-1.5 py-0.5 rounded text-primary font-bold" id="lbl-dispersion">3.0</span>
+                            </div>
+                            <input class="w-full cursor-pointer accent-primary" max="10" min="0" type="range" value="3" id="input-dispersion"/>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Group 5 (Línea de Tiempo & Render) -->
+                <section class="space-y-3">
+                    <h3 class="font-headline text-xs text-on-surface font-bold uppercase tracking-widest opacity-70 flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-[16px] text-primary">timer</span> Vídeo & Render
+                    </h3>
+                    <div class="space-y-3 bg-surface-container/30 p-3 rounded-lg border border-outline-variant/10">
+                        <div class="flex gap-4">
+                            <div class="flex-1">
+                                <label class="block font-headline text-[10px] text-on-surface-variant mb-1">Duración</label>
+                                <select id="select-duration" class="w-full bg-surface-container border-0 rounded-lg px-2.5 py-1.5 font-body text-xs text-on-surface focus:ring-2 focus:ring-primary focus:bg-surface-container-high transition-all">
+                                    <option value="5">5 Segs</option>
+                                    <option value="10" selected>10 Segs</option>
+                                    <option value="15">15 Segs</option>
+                                    <option value="20">20 Segs</option>
+                                </select>
+                            </div>
+                            <div class="flex-1">
+                                <label class="block font-headline text-[10px] text-on-surface-variant mb-1">Fluidez</label>
+                                <select id="select-fps" class="w-full bg-surface-container border-0 rounded-lg px-2.5 py-1.5 font-body text-xs text-on-surface focus:ring-2 focus:ring-primary focus:bg-surface-container-high transition-all">
+                                    <option value="30">30 FPS</option>
+                                    <option value="60" selected>60 FPS</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Frame Start -->
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-body text-[10px] text-on-surface-variant">Frame Start</span>
+                                <span class="font-display text-[10px] bg-surface-container-high px-1.5 py-0.5 rounded text-primary font-bold" id="lbl-frame-start">0</span>
+                            </div>
+                            <input class="w-full cursor-pointer accent-primary" max="600" min="0" type="range" value="0" id="input-frame-start"/>
+                        </div>
+                        <!-- Frame End -->
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-body text-[10px] text-on-surface-variant">Frame End</span>
+                                <span class="font-display text-[10px] bg-surface-container-high px-1.5 py-0.5 rounded text-primary font-bold" id="lbl-frame-end">600</span>
+                            </div>
+                            <input class="w-full cursor-pointer accent-primary" max="600" min="0" type="range" value="600" id="input-frame-end"/>
+                        </div>
+                    </div>
+                </section>
             </div>
 
-            <!-- Panel de Acciones y Controles de Exportación -->
-            <footer class="export-control-bar">
-                <div class="playback-controls">
-                    <button class="control-btn" id="btn-play-pause" title="Play/Pausa">
-                        <span class="btn-play-icon">⏸</span>
-                    </button>
-                    <span class="time-display" id="time-display">00:00 / 00:10</span>
-                </div>
+            <!-- Left Sidebar Footer / Save Action -->
+            <div class="p-5 border-t border-outline-variant/10 bg-surface-container-lowest/50 backdrop-blur-md">
+                <button class="w-full py-3 rounded-xl bg-gradient-to-r from-secondary-container to-primary-container text-white font-extrabold text-xs shadow-lg hover:shadow-primary/20 transition-all cursor-pointer flex justify-center items-center gap-2 active:scale-95" id="btn-save-template">
+                    <span class="material-symbols-outlined text-[16px]">save</span> Guardar Alerta
+                </button>
+            </div>
+        </aside>
 
-                <div class="export-actions" style="display: flex; gap: 10px;">
-                    <button class="help-btn" id="btn-open-guide">
-                        <span class="btn-help-icon">📖</span>
-                        <span>Guía de OBS / TikTok</span>
-                    </button>
-                    <button class="export-btn" id="btn-save-template" style="background: linear-gradient(135deg, var(--color-secondary), #00a8cc); box-shadow: 0 4px 20px rgba(0, 242, 254, 0.35);">
-                        <span class="btn-save-icon">💾</span>
-                        <span>Guardar Alerta</span>
-                    </button>
-                    <button class="export-btn" id="btn-export">
-                        <span class="btn-export-icon">🎬</span>
-                        <span>Exportar Video (1080x1920)</span>
-                    </button>
-                </div>
+        <!-- Right Workspace (Preview) -->
+        <main class="flex-1 relative flex flex-col bg-surface overflow-hidden">
+            
+            <!-- Floating Mode Toggles (Overlay 2D / Hand AR 3D) -->
+            <div class="absolute top-5 left-1/2 -translate-x-1/2 flex gap-2 bg-surface-container/60 backdrop-blur-md p-1.5 rounded-full border border-outline-variant/20 z-30 shadow-lg">
+                <button class="bg-primary text-on-primary px-5 py-2 rounded-full text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer" id="btn-mode-2d">Overlay 2D ⚡</button>
+                <button class="text-on-surface-variant px-5 py-2 rounded-full text-xs font-bold hover:bg-white/5 hover:text-primary transition-all active:scale-95 cursor-pointer" id="btn-mode-3d">Hand AR 3D 🥊</button>
+            </div>
 
-                <!-- Barra de Progreso de Exportación (Glassmorphism Overlay) -->
-                <div class="export-progress-container hidden" id="export-progress-container">
-                    <div class="progress-dialog">
-                        <div class="loader-spinner"></div>
-                        <h4 class="progress-title">Renderizando Video Premium...</h4>
-                        <p class="progress-subtitle">Grabando animaciones en tiempo real (1080x1920 @ 60fps)</p>
-                        <div class="progress-bar-bg">
-                            <div class="progress-bar-fill" id="export-progress-fill" style="width: 0%"></div>
+            <!-- Theme Toggle in top-right -->
+            <div class="absolute top-5 right-5 z-30 flex items-center gap-3">
+                <button class="w-10 h-10 rounded-full border border-outline-variant/20 flex items-center justify-center text-on-surface hover:border-primary transition-all bg-surface-container-lowest/80 backdrop-blur-sm cursor-pointer" id="btn-studio-theme-toggle" title="Cambiar Tema">☀️</button>
+            </div>
+
+            <!-- Canvas Area -->
+            <div class="flex-1 flex items-center justify-center relative p-6">
+                
+                <!-- Floating 3D Smartphone Simulator -->
+                <div class="relative w-[360px] h-[720px] rounded-[40px] bg-white dark:bg-slate-900 p-3 shadow-2xl border border-outline-variant/20 transform rotate-[-2deg] transition-all hover:rotate-0 duration-500 z-10 flex flex-col" id="phone-simulation-frame">
+                    
+                    <!-- Screen -->
+                    <div class="w-full h-full bg-slate-950 rounded-[32px] overflow-hidden relative">
+                        <!-- Main Drawing Canvas -->
+                        <canvas id="studio-canvas" width="1080" height="1920" class="w-full h-full object-cover absolute top-0 left-0 z-0"></canvas>
+                        
+                        <!-- Three.js 3D Viewport container -->
+                        <div id="canvas3d-container" class="hidden w-full h-full absolute top-0 left-0 z-10"></div>
+                        
+                        <!-- Overlay Interface widgets (Pointer events disabled for interactives underneath) -->
+                        <div class="absolute inset-0 z-20 pointer-events-none flex flex-col justify-between p-4 bg-gradient-to-t from-black/80 via-transparent to-black/30">
+                            <!-- Overlay Header -->
+                            <div class="flex justify-between items-start w-full">
+                                <div class="flex items-center gap-2">
+                                    <div class="bg-error text-white px-2 py-0.5 rounded text-[9px] font-headline font-bold uppercase tracking-wider animate-pulse-red flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-[12px] fill animate-pulse">sensors</span> LIVE
+                                    </div>
+                                    <div class="bg-black/50 backdrop-blur-md px-2 py-0.5 rounded-full text-[9px] text-white flex items-center gap-0.5 font-bold">
+                                        <span class="material-symbols-outlined text-[10px] text-primary fill">local_fire_department</span> 4.2k en vivo
+                                    </div>
+                                </div>
+                                <div class="bg-black/30 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[9px] text-white border border-white/10 font-bold">
+                                    Batalla Oficial
+                                </div>
+                            </div>
+                            
+                            <!-- Battle Score Bar -->
+                            <div class="w-full flex flex-col items-center mt-4" id="simulated-battle-bar">
+                                <div class="w-full flex justify-between items-end mb-1 text-[11px] font-bold text-white drop-shadow-md">
+                                    <span id="score-team-blue">24.5k</span>
+                                    <span class="bg-black/50 backdrop-blur-md px-2 py-0.5 rounded-full text-[9px] font-display" id="battle-timer">00:10</span>
+                                    <span id="score-team-red">24.5k</span>
+                                </div>
+                                <div class="w-full h-2.5 bg-black/40 rounded-full overflow-hidden flex border border-white/10">
+                                    <div class="h-full bg-[#00F2FE]" id="battle-blue-team" style="width: 50%;"></div>
+                                    <div class="h-full bg-[#FF0050]" id="battle-red-team" style="width: 50%;"></div>
+                                </div>
+                            </div>
+
+                            <!-- Spacer -->
+                            <div class="flex-1"></div>
+                            
+                            <!-- Bottom elements: Comments and streamer Tag -->
+                            <div class="w-full flex justify-between items-end gap-3 mt-auto">
+                                <!-- Chat Overlay -->
+                                <div class="w-2/3 h-24 overflow-hidden flex flex-col justify-end gap-1.5 text-left text-[10px] text-white/95" id="simulated-chat-box">
+                                    <!-- Comments populated via JS -->
+                                </div>
+                                
+                                <!-- Floating action buttons mock -->
+                                <div class="flex flex-col items-center gap-2">
+                                    <div class="w-8 h-8 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white border border-white/10"><span class="material-symbols-outlined text-[14px]">favorite</span></div>
+                                    <div class="w-8 h-8 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white border border-white/10"><span class="material-symbols-outlined text-[14px]">chat</span></div>
+                                    <div class="w-8 h-8 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white border border-white/10"><span class="material-symbols-outlined text-[14px]">redeem</span></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Streamer Info -->
+                            <div class="w-full text-left mt-2 border-t border-white/5 pt-1.5 text-[9px]">
+                                <span class="font-bold text-white block" id="streamer-tag">@streamer_pro</span>
+                                <span class="text-white/60 block">¡Apoyen con doble tap familia! 🚀⚡</span>
+                            </div>
                         </div>
-                        <span class="progress-percentage" id="export-progress-text">0%</span>
                     </div>
+                    <!-- Phone notch decoration -->
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-4 bg-white dark:bg-slate-900 rounded-b-xl z-30 border-l border-r border-b border-outline-variant/10"></div>
+                </div>
+
+                <!-- Decorative ambient background elements -->
+                <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl -z-10 animate-pulse"></div>
+                <div class="absolute bottom-1/4 right-1/4 w-64 h-64 bg-secondary/5 rounded-full blur-3xl -z-10 animate-pulse"></div>
+            </div>
+
+            <!-- Bottom Action Bar (footer) -->
+            <footer class="h-20 bg-surface-container-lowest/90 backdrop-blur-xl border-t border-outline-variant/20 flex items-center justify-between px-6 shrink-0 z-20">
+                <!-- Play Controls -->
+                <div class="flex items-center gap-4">
+                    <button class="w-10 h-10 rounded-full bg-surface-container-high hover:bg-primary/20 text-on-surface hover:text-primary flex items-center justify-center transition-all cursor-pointer border border-outline-variant/10 shadow active:scale-95" id="btn-play-pause" title="Play/Pausa">
+                        <span class="btn-play-icon material-symbols-outlined text-[20px] fill">pause</span>
+                    </button>
+                    <div class="font-display text-xs text-on-surface-variant" id="time-display">00:00 / 00:10</div>
+                </div>
+                
+                <!-- Actions -->
+                <div class="flex items-center gap-3">
+                    <button class="py-2 px-4 rounded-lg border border-outline-variant/20 hover:bg-white/5 text-on-surface text-xs font-semibold flex justify-center items-center gap-2 transition-colors cursor-pointer" id="btn-open-guide">
+                        <span class="material-symbols-outlined text-[16px]">menu_book</span> Guía de OBS / Live
+                    </button>
+                    <button class="px-5 py-2.5 rounded-lg bg-primary text-on-primary font-bold text-xs shadow-lg hover:shadow-primary/30 transition-all flex justify-center items-center gap-2 active:scale-95 cursor-pointer" id="btn-export">
+                        <span class="material-symbols-outlined text-[16px]">download</span> Exportar Video WebM
+                    </button>
                 </div>
             </footer>
-        </section>
+
+            <!-- Render Progress Overlay (locks entire right workspace when rendering) -->
+            <div class="export-progress-container hidden absolute inset-0 bg-background/95 backdrop-blur-md z-50 flex items-center justify-center p-6 transition-all" id="export-progress-container">
+                <div class="text-center space-y-4 max-w-sm w-full bg-surface-container-lowest p-8 rounded-2xl border border-outline-variant/20 shadow-2xl">
+                    <div class="inline-block animate-spin rounded-full h-10 w-10 border-4 border-primary border-t-transparent mb-2"></div>
+                    <h4 class="progress-title font-headline text-base font-bold text-on-surface">Renderizando Alerta Premium...</h4>
+                    <p class="progress-subtitle text-xs text-on-surface-variant leading-relaxed">Capturando fotogramas clave transparentes en tiempo real (1080x1920 @ 60fps)</p>
+                    <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden border border-outline-variant/10">
+                        <div class="h-full bg-primary" id="export-progress-fill" style="width: 0%"></div>
+                    </div>
+                    <span class="progress-percentage text-sm font-display font-semibold text-primary block" id="export-progress-text">0%</span>
+                </div>
+            </div>
+        </main>
     </div>
 
     <!-- 5. MODAL DE LA GUÍA DE CONFIGURACIÓN OBS / TIKTOK -->

@@ -25,12 +25,16 @@ export function setTheme(theme) {
     updateState({ currentTheme: theme });
     localStorage.setItem('winsnipe_theme', theme);
 
-    // Aplicar o remover clase en el body
+    // Aplicar o remover clase en el body y en html para Tailwind
     if (theme === 'light') {
         document.body.classList.add('theme-light');
+        document.documentElement.classList.add('light');
+        document.documentElement.classList.remove('dark');
         updateToggleIcons('🌙'); // Mostrar luna cuando esté en modo claro
     } else {
         document.body.classList.remove('theme-light');
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
         updateToggleIcons('☀️'); // Mostrar sol cuando esté en modo oscuro
     }
 }

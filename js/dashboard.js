@@ -35,13 +35,8 @@ export function initDashboard() {
 // Cambia el modo de simulación (Overlay 2D del Canvas vs AR 3D de Three.js)
 export function switchPreviewMode(mode) {
     if (mode === '3d') {
-        dom.btnMode2D.classList.remove('active');
-        dom.btnMode2D.style.background = 'transparent';
-        dom.btnMode2D.style.color = 'var(--text-secondary)';
-
-        dom.btnMode3D.classList.add('active');
-        dom.btnMode3D.style.background = 'var(--color-primary)';
-        dom.btnMode3D.style.color = '#ffffff';
+        dom.btnMode2D.className = "text-on-surface-variant px-5 py-2 rounded-full text-xs font-bold hover:bg-white/5 hover:text-primary transition-all active:scale-95 cursor-pointer";
+        dom.btnMode3D.className = "bg-primary text-on-primary px-5 py-2 rounded-full text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer";
 
         // Ocultar Overlay HTML y mostrar contenedor Three.js
         dom.canvas3DContainer.classList.remove('hidden');
@@ -52,13 +47,8 @@ export function switchPreviewMode(mode) {
         rebuildGloveMesh();
         startThreeAR();
     } else {
-        dom.btnMode3D.classList.remove('active');
-        dom.btnMode3D.style.background = 'transparent';
-        dom.btnMode3D.style.color = 'var(--text-secondary)';
-
-        dom.btnMode2D.classList.add('active');
-        dom.btnMode2D.style.background = 'var(--color-primary)';
-        dom.btnMode2D.style.color = '#ffffff';
+        dom.btnMode3D.className = "text-on-surface-variant px-5 py-2 rounded-full text-xs font-bold hover:bg-white/5 hover:text-primary transition-all active:scale-95 cursor-pointer";
+        dom.btnMode2D.className = "bg-primary text-on-primary px-5 py-2 rounded-full text-xs font-bold transition-all shadow-md active:scale-95 cursor-pointer";
 
         // Ocultar contenedor Three.js y detener animación
         dom.canvas3DContainer.classList.add('hidden');
@@ -284,6 +274,11 @@ function loadPresetIntoStudio(preset) {
     // Actualizar visualizaciones de colores (las pastillas traseras)
     dom.colorPrimary.nextElementSibling.style.backgroundColor = preset.configuracion_visual.color_primario;
     dom.colorSecondary.nextElementSibling.style.backgroundColor = preset.configuracion_visual.color_secundario;
+    
+    const textPrimary = document.getElementById('color-primary-text');
+    if (textPrimary) textPrimary.textContent = preset.configuracion_visual.color_primario.toUpperCase();
+    const textSecondary = document.getElementById('color-secondary-text');
+    if (textSecondary) textSecondary.textContent = preset.configuracion_visual.color_secundario.toUpperCase();
 
     // 2. Cargar duraciones y sliders
     dom.selectDuration.value = preset.linea_tiempo_ar.duration.toString();
@@ -304,7 +299,7 @@ function loadPresetIntoStudio(preset) {
         preset.linea_tiempo_ar.fps
     );
 
-    // 3. Activar el botón de la plantilla adecuada
+    // 3. Activar el botón de la plantilla adecuada y actualizar checkmarks
     dom.tmplButtons.forEach(btn => {
         if (btn.dataset.template === preset.tipo_efecto) {
             btn.classList.add('active');
@@ -312,6 +307,23 @@ function loadPresetIntoStudio(preset) {
             btn.classList.remove('active');
         }
     });
+
+    const checkTap = document.getElementById('tmpl-active-tap');
+    const checkGlove = document.getElementById('tmpl-active-glove');
+    const checkVersus = document.getElementById('tmpl-active-versus');
+    
+    if (checkTap) {
+        if (preset.tipo_efecto === 'tap') checkTap.classList.remove('hidden');
+        else checkTap.classList.add('hidden');
+    }
+    if (checkGlove) {
+        if (preset.tipo_efecto === 'glove') checkGlove.classList.remove('hidden');
+        else checkGlove.classList.add('hidden');
+    }
+    if (checkVersus) {
+        if (preset.tipo_efecto === 'versus') checkVersus.classList.remove('hidden');
+        else checkVersus.classList.add('hidden');
+    }
     setCurrentTemplate(preset.tipo_efecto);
 
     // 4. Restaurar fotos cargadas (base64)
