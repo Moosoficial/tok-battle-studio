@@ -22,7 +22,9 @@ export function showView(viewId) {
 }
 
 export function initRouter() {
-    dom.btnLandingStart.addEventListener('click', () => showView('view-auth'));
+    if (dom.btnNavSignin) dom.btnNavSignin.addEventListener('click', () => showView('view-auth'));
+    if (dom.btnNavGetstarted) dom.btnNavGetstarted.addEventListener('click', () => showView('view-auth'));
+    if (dom.btnLandingStartHero) dom.btnLandingStartHero.addEventListener('click', () => showView('view-auth'));
     dom.btnBackDashboard.addEventListener('click', () => showView('view-dashboard'));
     
     // Filtros Dashboard

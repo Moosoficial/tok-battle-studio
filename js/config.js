@@ -48,7 +48,9 @@ export function initDOM() {
     dom.viewDashboard = document.getElementById('view-dashboard');
     dom.viewStudio = document.getElementById('view-studio');
     
-    dom.btnLandingStart = document.getElementById('btn-landing-start');
+    dom.btnNavSignin = document.getElementById('btn-nav-signin');
+    dom.btnNavGetstarted = document.getElementById('btn-nav-getstarted');
+    dom.btnLandingStartHero = document.getElementById('btn-landing-start-hero');
     dom.btnBackDashboard = document.getElementById('btn-back-dashboard');
     dom.btnLogout = document.getElementById('btn-logout');
     dom.btnDashboardThemeToggle = document.getElementById('btn-dashboard-theme-toggle');

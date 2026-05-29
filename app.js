@@ -5,6 +5,7 @@ import { initRouter, showView } from './js/router.js';
 import { initCanvas } from './js/canvas.js';
 import { initTheme } from './js/theme.js';
 import { initDashboard } from './js/dashboard.js';
+import { initLandingAnimations } from './js/landing-animations.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     initDOM();
@@ -13,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initRouter();
     initCanvas();
     initDashboard();
+    initLandingAnimations();
     
     const savedUser = localStorage.getItem('tokbattle_user');
     if (savedUser) {

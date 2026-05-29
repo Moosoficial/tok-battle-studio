@@ -8,7 +8,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="css/variables.css">
@@ -56,6 +56,24 @@
                         "on-error": "var(--on-error)",
                         "error-container": "var(--error-container)",
                         "on-error-container": "var(--on-error-container)",
+                        
+                        /* Nano Banana Studio Custom Extended Tokens */
+                        "surface-tint": "var(--surface-tint)",
+                        "on-primary-fixed-variant": "var(--on-primary-fixed-variant)",
+                        "inverse-surface": "var(--inverse-surface)",
+                        "on-primary-fixed": "var(--on-primary-fixed)",
+                        "primary-fixed": "var(--primary-fixed)",
+                        "primary-fixed-dim": "var(--primary-fixed-dim)",
+                        "secondary-fixed": "var(--secondary-fixed)",
+                        "secondary-fixed-dim": "var(--secondary-fixed-dim)",
+                        "on-secondary-fixed": "var(--on-secondary-fixed)",
+                        "on-secondary-fixed-variant": "var(--on-secondary-fixed-variant)",
+                        "inverse-primary": "var(--inverse-primary)",
+                        "inverse-on-surface": "var(--inverse-on-surface)",
+                        "tertiary-fixed": "var(--tertiary-fixed)",
+                        "tertiary-fixed-dim": "var(--tertiary-fixed-dim)",
+                        "on-tertiary-fixed": "var(--on-tertiary-fixed)",
+                        "on-tertiary-fixed-variant": "var(--on-tertiary-fixed-variant)"
                     },
                     borderRadius: {
                         DEFAULT: "0.25rem",
@@ -67,6 +85,26 @@
                         headline: ["'Plus Jakarta Sans'", "sans-serif"],
                         body: ["'Outfit'", "sans-serif"],
                         display: ["'Space Grotesk'", "sans-serif"],
+                        
+                        /* Nano Banana Custom Fonts */
+                        "mono-label": ["'Inter'", "sans-serif"],
+                        "label-sm": ["'Inter'", "sans-serif"],
+                        "display-lg": ["'Plus Jakarta Sans'", "sans-serif"],
+                        "body-md": ["'Inter'", "sans-serif"],
+                        "headline-lg-mobile": ["'Plus Jakarta Sans'", "sans-serif"],
+                        "title-md": ["'Plus Jakarta Sans'", "sans-serif"],
+                        "headline-lg": ["'Plus Jakarta Sans'", "sans-serif"],
+                        "body-lg": ["'Inter'", "sans-serif"]
+                    },
+                    fontSize: {
+                        "mono-label": ["11px", {"lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "title-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
                     }
                 }
             }
@@ -146,40 +184,134 @@
 <body>
     <!-- 1. VISTA DE BIENVENIDA (LANDING PAGE) -->
     <div id="view-landing" class="view-section">
-        <div class="landing-hero">
-            <div class="logo landing-logo">
-                <span class="logo-glow">TOK</span>
-                <span class="logo-solid">BATTLE</span>
-                <span class="logo-badge">STUDIO</span>
-            </div>
-            <h1 class="landing-title">Lleva tus Batallas de TikTok Live al Siguiente Nivel</h1>
-            <p class="landing-subtitle">Genera alertas interactivas neón, efectos táctiles y cuentas regresivas animadas con transparencia real en tiempo real.</p>
-            <button class="btn-primary-neon animate-pulse" id="btn-landing-start">
-                <span>⚡</span> COMENZAR AHORA
-            </button>
-            <div class="landing-features-grid">
-                <div class="feature-card">
-                    <span class="feature-icon">⚡</span>
-                    <h3>Doble Tap</h3>
-                    <p>Likes voladores, aros de pulso y corazones flotantes neón.</p>
+        <!-- TopNavBar -->
+        <nav class="bg-surface-container-lowest dark:bg-inverse-surface border-b border-surface-variant dark:border-outline-variant w-full sticky top-0 z-50">
+            <div class="flex justify-between items-center w-full px-lg py-sm max-w-7xl mx-auto h-toolbar-height">
+                <div class="flex items-center gap-md">
+                    <a class="font-display-lg text-title-md font-bold text-primary dark:text-primary-fixed-dim" href="#">Nano Banana Studio</a>
+                    <div class="hidden md:flex gap-lg ml-xl">
+                        <a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors font-title-md text-body-md hover:bg-surface-container dark:hover:bg-surface-container-high rounded-lg px-xs py-base" href="#">Templates</a>
+                        <a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors font-title-md text-body-md hover:bg-surface-container dark:hover:bg-surface-container-high rounded-lg px-xs py-base" href="#">AI Tools</a>
+                        <a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors font-title-md text-body-md hover:bg-surface-container dark:hover:bg-surface-container-high rounded-lg px-xs py-base" href="#">Pricing</a>
+                        <a class="text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors font-title-md text-body-md hover:bg-surface-container dark:hover:bg-surface-container-high rounded-lg px-xs py-base" href="#">Showcase</a>
+                    </div>
                 </div>
-                <div class="feature-card">
-                    <span class="feature-icon">🥊</span>
-                    <h3>Guante x5</h3>
-                    <p>Temporizadores competitivos con multiplicadores animados.</p>
-                </div>
-                <div class="feature-card">
-                    <span class="feature-icon">⚔️</span>
-                    <h3>Batalla VS</h3>
-                    <p>División diagonal parpadeante con auras dinámicas.</p>
-                </div>
-                <div class="feature-card">
-                    <span class="feature-icon">🎬</span>
-                    <h3>Grabación Alfa</h3>
-                    <p>Exporta WebM transparente de alta calidad directo a OBS.</p>
+                <div class="flex items-center gap-sm">
+                    <button id="btn-nav-signin" class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary bg-transparent px-md py-xs rounded-lg transition-colors border border-transparent hover:border-surface-variant">Sign In</button>
+                    <button id="btn-nav-getstarted" class="font-label-sm text-label-sm bg-primary-container text-on-primary-container px-md py-xs rounded-lg hover:opacity-90 transition-opacity scale-95 transition-transform duration-200">Get Started</button>
                 </div>
             </div>
-        </div>
+        </nav>
+        
+        <!-- Hero Section -->
+        <header class="relative w-full overflow-hidden bg-surface flex items-center justify-center min-h-[819px] border-b border-surface-variant shrink-0" id="hero">
+            <!-- Dynamic Animated Background -->
+            <div class="absolute inset-0 z-0 overflow-hidden bg-surface-container-lowest">
+                <div class="absolute top-0 -left-4 w-96 h-96 bg-primary-container rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+                <div class="absolute top-0 -right-4 w-96 h-96 bg-tertiary-container rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+                <div class="absolute -bottom-8 left-20 w-96 h-96 bg-secondary-container rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob animation-delay-4000"></div>
+            </div>
+            <!-- Particles Container -->
+            <div id="particles-container"></div>
+            <!-- Original Background Image (Reduced opacity to blend with new effects) -->
+            <div class="absolute inset-0 z-1 opacity-10 pointer-events-none mix-blend-multiply" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCgB1lJl8EXn-1waTqJWOG9Rn8TajlPEZkTf8Po1hPwWjbPQ8e3di7M90spfL9oaa5lfH26QnOvv9g5FD4uw02sfqLaVdYIUdmcgqTYuQK3YhSuvKS_Lcy4nZqp9ugsbEepDQS7-d2lkpHktEFpiIMWZtnqYvA4xkKbQcBObXxT85EcEETG7lnaWHDooikZ6eLRNBpbgko5pqfrC-Dm1hgQwt0Hn-3tacjh8vVPFE0xMsP5C0nHSiFvcMhD3mKDxsqgmul0LkMsQuyE'); background-size: cover; background-position: center;"></div>
+            <div class="relative z-10 max-w-4xl mx-auto px-lg text-center flex flex-col items-center gap-lg py-xl">
+                <h1 class="font-display-lg text-display-lg text-on-background md:text-[64px] md:leading-[72px] tracking-tight reveal-text reveal-delay-1">Crea Efectos Virales en Segundos</h1>
+                <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto reveal-text reveal-delay-2">La suite profesional para creadores. Genera efectos visuales de alta calidad para TikTok, Instagram y YouTube utilizando el poder de la IA en una interfaz limpia y sin distracciones.</p>
+                <div class="flex flex-col sm:flex-row gap-sm mt-md reveal-text reveal-delay-3">
+                    <button id="btn-landing-start-hero" class="font-label-sm text-label-sm bg-primary-container text-on-primary-fixed py-sm px-xl rounded-lg hover:opacity-90 transition-opacity shadow-sm flex items-center gap-xs justify-center btn-pulse relative overflow-hidden group">
+                        <span class="relative z-10 flex items-center gap-xs">
+                            Empezar a Crear
+                            <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </span>
+                        <div class="absolute inset-0 bg-white/20 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"></div>
+                    </button>
+                    <button class="font-label-sm text-label-sm bg-surface text-on-surface border border-outline-variant py-sm px-xl rounded-lg hover:bg-surface-container-low transition-colors flex items-center gap-xs justify-center group">
+                        Ver Demo
+                        <span class="material-symbols-outlined text-[18px] group-hover:scale-110 transition-transform">play_circle</span>
+                    </button>
+                </div>
+                <p class="font-mono-label text-mono-label text-outline mt-xl uppercase tracking-widest reveal-text reveal-delay-4">Únete a más de 10,000 creadores</p>
+            </div>
+        </header>
+
+        <!-- Features Grid -->
+        <section class="py-xl px-lg max-w-7xl mx-auto w-full bg-background shrink-0">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-lg">
+                <div class="scroll-reveal bg-surface-container-lowest border border-surface-variant rounded-xl p-lg hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+                    <div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center mb-md text-primary">
+                        <span class="material-symbols-outlined text-[24px]">magic_button</span>
+                    </div>
+                    <h3 class="font-title-md text-title-md text-on-background mb-xs">IA Generativa</h3>
+                    <p class="font-body-md text-body-md text-on-surface-variant">Modelos optimizados para la creación de assets de video con precisión de estudio.</p>
+                </div>
+                <div class="scroll-reveal bg-surface-container-lowest border border-surface-variant rounded-xl p-lg hover:shadow-md hover:-translate-y-1 transition-all duration-300" style="transition-delay: 100ms;">
+                    <div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center mb-md text-primary">
+                        <span class="material-symbols-outlined text-[24px]">animation</span>
+                    </div>
+                    <h3 class="font-title-md text-title-md text-on-background mb-xs">Animación por Prompt</h3>
+                    <p class="font-body-md text-body-md text-on-surface-variant">Controla keyframes y transiciones complejas usando lenguaje natural.</p>
+                </div>
+                <div class="scroll-reveal bg-surface-container-lowest border border-surface-variant rounded-xl p-lg hover:shadow-md hover:-translate-y-1 transition-all duration-300" style="transition-delay: 200ms;">
+                    <div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center mb-md text-primary">
+                        <span class="material-symbols-outlined text-[24px]">4k</span>
+                    </div>
+                    <h3 class="font-title-md text-title-md text-on-background mb-xs">Exportación en 4K</h3>
+                    <p class="font-body-md text-body-md text-on-surface-variant">Renders ultra rápidos y limpios listos para publicación profesional.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Showcase -->
+        <section class="py-xl px-lg w-full bg-surface-container-low border-t border-surface-variant shrink-0">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-lg gap-sm scroll-reveal">
+                    <div>
+                        <h2 class="font-headline-lg text-headline-lg text-on-background md:text-[40px]">Resultados que Impactan</h2>
+                        <p class="font-body-lg text-body-lg text-on-surface-variant mt-xs">Creado enteramente en Nano Banana Studio.</p>
+                    </div>
+                    <button class="font-label-sm text-label-sm text-primary hover:text-primary-fixed-dim transition-colors flex items-center gap-xs">
+                        Ver Galería Completa
+                        <span class="material-symbols-outlined text-[16px]">arrow_right_alt</span>
+                    </button>
+                </div>
+                <!-- Bento Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-sm auto-rows-[240px]">
+                    <div class="scroll-reveal md:col-span-2 md:row-span-2 rounded-xl overflow-hidden relative group bg-surface border border-outline-variant">
+                        <img alt="Abstract 3D rendering" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHuOUKvObXptJIk2RtaYyS7UbdhHUEjKdQ6vsSf82nxdSFBpRZ2Ru0LzlBhCR7PY_7-JJ8QF7Zt6AMZiSX5op9xDT94uI3eLelkbSxZP6ZCzxBpO6g4DRziav-Mgc6GqSIEVzEhgKvZvrhv5zQMZra2Fnv9iNWp7Ht9S5ton4hqx-nZTAt-gTVTrOGmk8eBBGcfWxBnjH5kuJxqPTZxyaXi-LXOwPWJwjLqujvUz1EkmGmFGLkfodOOM6JV7yy6iE-huQejP5_hMXw"/>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-md">
+                            <p class="font-label-sm text-label-sm text-white">Cyberpunk Glitch Effect</p>
+                        </div>
+                    </div>
+                    <div class="scroll-reveal md:col-span-1 md:row-span-1 rounded-xl overflow-hidden relative group bg-surface border border-outline-variant" style="transition-delay: 100ms;">
+                        <img alt="Abstract gradient" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQXQ05s1J0a4-Iu9_Mk12PnNuTNIiN2j0CP00Tv8A5gfQ2mIM_3IGJhaqJFKgS8KqJOA7ZnGmi-4evcAeTjIGmD0PnVEXT2PQYWwkpIXevL3am76AMrfkVrcmEtX-STuTQna6a6IaWOcI4ZPeuxaIE306ZIapH46iY2VbKgc-_fkeCSWHj_QOEMvjZntUJkrCs0Q13n-jkkqRHtpAP06oze7D-wFxmaD5OIVDdDuGg4GHQ9cBazD5LqqgUnga9HS3udEQinkju_usx"/>
+                    </div>
+                    <div class="scroll-reveal md:col-span-1 md:row-span-1 rounded-xl overflow-hidden relative group bg-surface border border-outline-variant" style="transition-delay: 200ms;">
+                        <img alt="Particle effect" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjsZBHJB0BrHB-jCAtQh8egQ5Grfnshyh_xkYXPRc1iznpQWs4lLslDb9_of3ei9SK80E6tfFIESZ1ZvT-Yj_0FVPgFc027HyIIPJajZ8XvLUh2WVbxGds_9KhCkbnzntkgKmHHqkx12mAhEG8FlEopSsvxOanPrmQvja-nnbNQcraZ37VApUiZw-nfGW6Pay8v97xUkdIXmm0cWRZNLBCIVVOE8z7p8GAb1WYHF_LxO87BKaeKL77X6GCyfdnN0be_0Scg1mrnzcj"/>
+                    </div>
+                    <div class="scroll-reveal md:col-span-2 md:row-span-1 rounded-xl overflow-hidden relative group bg-surface border border-outline-variant flex items-center justify-center hover:bg-surface-container-high transition-colors cursor-pointer" style="transition-delay: 300ms;">
+                        <div class="text-center p-md group">
+                            <span class="material-symbols-outlined text-[32px] text-primary mb-xs group-hover:scale-125 transition-transform duration-300">play_arrow</span>
+                            <p class="font-title-md text-title-md text-on-background">Ver Reel de la Comunidad</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-surface-container-low dark:bg-inverse-surface border-t border-surface-variant dark:border-outline-variant w-full shrink-0">
+            <div class="flex flex-col md:flex-row justify-between items-center w-full px-lg py-md gap-md max-w-7xl mx-auto">
+                <span class="font-title-md text-title-md font-bold text-primary dark:text-primary-fixed-dim">Nano Banana Studio</span>
+                <div class="flex flex-wrap gap-md justify-center">
+                    <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors opacity-80 hover:opacity-100" href="#">Creator Fund</a>
+                    <a class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant hover:text-secondary dark:hover:text-secondary-fixed-dim transition-colors opacity-80 hover:opacity-100" href="#">Support</a>
+                </div>
+                <span class="font-body-md text-body-md text-on-surface-variant dark:text-surface-variant text-sm text-center md:text-left">© 2024 Nano Banana Studio. Professional Video Framework.</span>
+            </div>
+        </footer>
     </div>
 
     <!-- 2. VISTA DE AUTENTICACIÓN (LOGIN & REGISTRO) -->
